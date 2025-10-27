@@ -6,7 +6,7 @@
 |--------------------|--------------|------------------------| 
 | Nika Antolić       | 0016160424   | nantolic22 |  
 | David Brckan       | 0016159400   | dbrckan22 |   
-| Antonio Đimbrek    | 0016159138   | ddimbrek22 |  
+| Antonio Đimbrek    | 0016159138   | adimbrek22 |  
 | Sandra Sačarić     | 0016150340   | ssacaric20 |  
 
 ## <img width="25" height="25" alt="project" src="https://github.com/user-attachments/assets/afdc8967-ddb3-4a8e-8130-a9b35c14bc99" /> O projektu
