@@ -1,1 +1,1 @@
-Tu se piše fzavršno izvješće
+Tu se piše završno izvješće
