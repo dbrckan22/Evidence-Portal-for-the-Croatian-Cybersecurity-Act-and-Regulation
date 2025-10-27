@@ -27,8 +27,15 @@ Sustav omogućuje:
 | **Stručnjak za upravljanje** | Izrađuje biblioteku prijedloga dokaza i praktične smjernice | Antonio Đimbrek |
 
 ## <img width="25" height="25" alt="tecnologies" src="https://github.com/user-attachments/assets/9d6c9784-471f-4d1d-b62c-f3e1ea5f2287" /> Tehnologije
-Projekt će biti razvijen korištenjem modernih tehnologija i alata za izradu web aplikacije i upravljanje bazom podataka:
+Projekt će biti razvijen korištenjem modernih tehnologija i alata za izradu web aplikacije i upravljanje bazom podataka.
+
+<img width="23" height="23" alt="backend" src="https://github.com/user-attachments/assets/72574d30-7dee-4d91-bbc6-7de4be6e1da2" /> **Backend**:
 - **C#** - glavni programski jezik za implementaciju logike sustava
 - **.NET Core** - framework za izradu skalabilne i višeslojne web aplikacije
 - **SQL Server** - relacijska baza podataka za pohranu obveza, dokaza...
 - **SSMS (SQL Server Management Studio)** - alat za administraciju i upravljanje bazom podataka
+
+<img width="23" height="23" alt="frontend" src="https://github.com/user-attachments/assets/c370dd89-a03f-4480-9936-0b31250f9f42" /> **Frontend**:
+- **HTML** - struktura i sadržaj korisničkog sučelja
+- **CSS** - oblikovanje i vizualni dizajn elemenata aplikacije
+- **JavaScript** - interaktivnost i dinamičko ponašanje elemenata sučelja
