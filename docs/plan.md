@@ -21,7 +21,7 @@
 ### <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/50e9489d-d626-4ce4-bc99-20c30b514f06" /> Integracija i testiranje
 - testiranje prijenosa i prikaza dokaza, funkcionalnosti nadzorne ploče i izvoza ZIP datoteka  
 - ispravljanje bugova 
-- _obavlja_: svi članovi tim
+- _obavlja_: svi članovi tima
 
 ### <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/906675b7-2e7b-4d87-982a-9aeb54dbe69c" /> Dokumentacija 
 - izrađivanje vodiča za postavljanje i korištenje aplikacije  
