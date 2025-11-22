@@ -47,8 +47,7 @@
                                 id="trigger-register" data-slot="tabs-trigger" class="tab-button" tabindex="-1"
                                 data-orientation="horizontal">Registracija</button>
                         </div>
-                        <div data-slot="card" class="bg-card card">
-                            <div data-state="active" data-orientation="horizontal" role="tabpanel"
+                            <div class="bg-card card" data-state="active" data-orientation="horizontal" role="tabpanel"
                                 aria-labelledby="trigger-login" id="content-login" tabindex="0" data-slot="tabs-content"
                                 class="flex-1 outline-none">
                                 <div class="card-header">
@@ -60,42 +59,49 @@
                                     <form class="space-y-4">
                                         <div class="form-field">
                                             <label for="login-email">Email</label>
-                                            <input id="login-email" type="email">
-                                            <div class="form-field">
-                                                <label for="login-lozinka">Lozinka</label>
-                                                <input id="login-lozinka" type="lozika">
-                                            </div>
-                                            <button type="submit" class="btn-base button-primary">Prijavi se</button>
-                                            <p class="text-sm text-muted-foreground text-center">Demo:
+                                            <input id="login-email" type="email">                                    
+                                            <label for="login-lozinka">Lozinka</label>
+                                            <input id="login-lozinka" type="lozika">
+                                        </div>
+                                        <button type="submit" class="btn-base button-primary">Prijavi se</button>
+                                        <p class="text-sm text-muted-foreground text-center">Demo:
                                                 admin@tvrtka.hr / demo123</p>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                            aria-labelledby="trigger-register" hidden="" id="content-register" tabindex="0"
-                            data-slot="tabs-content" class="flex-1 outline-none">
-                            <div class="card-header">
-                                <p class="card-title" class="leading-none">Registracija</p>
-                                <p class="card-description" class="text-muted-foreground">Napravite novi račun</p>
-                            </div>
-                            <div class="card-content">
-                                <form class="space-y-4">
-                                    <div class="form-field">
-                                        <label for="login-ime">Ime i prezime</label>
-                                        <input id="login-ime" type="imeprezime">
+                            <div class="bg-card card" data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                                aria-labelledby="trigger-register" hidden="" id="content-register" tabindex="0"
+                                data-slot="tabs-content" class="flex-1 outline-none">
+                                <div class="card-header">
+                                        <p class="card-title" class="leading-none">Registracija</p>
+                                        <p class="card-description" class="text-muted-foreground">Registrirajte novi račun</p>
+                                    </div>
+                                <div class="card-content">
+                                    <form class="space-y-4">
                                         <div class="form-field">
-                                            <label for="login-email">Email</label>
-                                            <input id="login-email" type="email">
-                                            <div class="form-field">
-                                                <label for="login-lozinka">Lozinka</label>
-                                                <input id="login-lozinka" type="lozika">
+                                            <label for="register-ime">Ime</label>
+                                            <input id="register-ime" type="ime">
+                                            <label for="register-prezime">Prezime</label>
+                                            <input id="register-prezime" type="prezime">
+                                            <div class="decorated">
+                                                <label for="register-org">Organizacija</label>
+                                                <select name="color" id="register-org">
+                                                    <option value="red">Red</option>
+                                                    <option value="blue">Blue</option>
+                                                    <option value="green">Green</option>
+                                                </select>
                                             </div>
-                                            <button type="submit" class="btn-base button-primary">Registriraj
-                                                se</button>
-                                            <p class="text-sm text-muted-foreground text-center">Demo:
-                                                admin@tvrtka.hr / demo123</p>
-                                </form>
+                                            <label for="register-email">Email</label>
+                                            <input id="register-email" type="email">
+                                            <label for="register-lozinka">Lozinka</label>
+                                            <input id="register-lozinka" type="lozika">
+                                        </div>
+                                        <button type="submit" class="btn-base button-primary">Registriraj se</button>
+                                        <p class="text-sm text-muted-foreground text-center">Demo:
+                                                    admin@tvrtka.hr / demo123</p>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -69,10 +69,18 @@ body {
     font-size: 1rem;
 }
 
-.form-field input:focus {
-    border-color: #000000;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(94, 123, 182, 0.25);
+.form-field select {
+    height: 30px;
+    width: -webkit-fill-available;
+    border: 1px solid #9aa1aa;
+    border-radius: 12px;
+    margin-top: 6px;
+    padding-left:12px;
+    font-size: 0.75rem;
+    transition: 0.4s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button-primary {
@@ -160,10 +168,28 @@ body {
 
 .select-card {
     background: #ffffff;
-    border: 1px solid #e3e3e3;
+    border: 1px solid #93969b;
     border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
 }
+
+select:hover, select:focus {
+    border-color: #59748b;
+    box-shadow: 0 0 0 2px rgba(53, 53, 53, 0.25);
+}
+
+select,
+::picker(select) {
+    appearance: base-select;
+    border: 1px solid #e3e3e3;
+    border-radius: 12px;
+}
+
+.decorated {
+    margin:5px 0;
+}
+
+
