@@ -219,10 +219,16 @@ input.error, select.error {
 
 .btn-back {
     background: none;
-    border: none;
-    font-size: 1.25rem;
+    font-size: 1.75rem;
+    border: 1px solid #93969b;
+    border-radius: 12px;
     cursor: pointer;
-    margin-bottom: 8px;
+    margin-top: 10px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px 5px 3px;
 }
 
 
