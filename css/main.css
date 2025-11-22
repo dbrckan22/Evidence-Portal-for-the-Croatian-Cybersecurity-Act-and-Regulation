@@ -27,12 +27,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh;
+    min-height: 100vh;
 }
 
 .auth-page {
     background: #e8f1ff;
-    padding: 2rem;
 }
 
 .card {
@@ -85,6 +84,7 @@ body {
     border: none;
     cursor: pointer;
     font-weight: 500;
+    margin-top: 10px;
 }
 
 .button-primary:hover {

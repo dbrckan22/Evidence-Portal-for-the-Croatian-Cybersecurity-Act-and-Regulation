@@ -18,68 +18,84 @@
 
 <body>
     <div id="container">
-                <div class="auth-page">
-                    <div class="layout-center-screen">
-                        <div>
-                            <div>
-                                <div class="app-icon-area">
-                                    <div class="app-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
-                                            fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" aria-hidden="true">
-                                            <path
-                                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <h1>Sustav za upravljanje usklađenošću</h1>
-                                <p class="text-secondary">Pratite obveze prema hrvatskom zakonu o
-                                    kibernetičkoj sigurnosti</p>
+        <div class="auth-page">
+            <div class="layout-center-screen">
+                <div>
+                    <div>
+                        <div class="app-icon-area">
+                            <div class="app-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
+                                    fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" aria-hidden="true">
+                                    <path
+                                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
+                                    </path>
+                                </svg>
                             </div>
-                            <div dir="ltr" data-orientation="horizontal" data-slot="tabs"
-                                class="flex flex-col gap-2 w-full">
-                                <div role="tablist" aria-orientation="horizontal" data-slot="tabs-list"
-                                    class="select-card"
-                                    tabindex="0" data-orientation="horizontal" style="outline: none;">
-                                    <button type="button" role="tab" data-state="active" id="trigger-login" data-slot="tabs-trigger" class="tab-button"
-                                        data-value="login" tabindex="-1" data-orientation="horizontal">Prijava</button>
-                                    <button type="button" role="tab" aria-selected="false" data-state="inactive"
-                                        id="trigger-register" data-slot="tabs-trigger" class="tab-button" tabindex="-1" data-orientation="horizontal">Registracija</button>
+                        </div>
+                        <h1>Sustav za upravljanje usklađenošću</h1>
+                        <p class="text-secondary">Pratite obveze prema hrvatskom zakonu o
+                            kibernetičkoj sigurnosti</p>
+                    </div>
+                    <div dir="ltr" data-orientation="horizontal" data-slot="tabs" class="flex flex-col gap-2 w-full">
+                        <div role="tablist" aria-orientation="horizontal" data-slot="tabs-list" class="select-card"
+                            tabindex="0" data-orientation="horizontal" style="outline: none;">
+                            <button type="button" role="tab" data-state="active" id="trigger-login"
+                                data-slot="tabs-trigger" class="tab-button" data-value="login" tabindex="-1"
+                                data-orientation="horizontal">Prijava</button>
+                            <button type="button" role="tab" aria-selected="false" data-state="inactive"
+                                id="trigger-register" data-slot="tabs-trigger" class="tab-button" tabindex="-1"
+                                data-orientation="horizontal">Registracija</button>
+                        </div>
+                        <div data-slot="card" class="bg-card card">
+                            <div data-state="active" data-orientation="horizontal" role="tabpanel"
+                                aria-labelledby="trigger-login" id="content-login" tabindex="0" data-slot="tabs-content"
+                                class="flex-1 outline-none">
+                                <div class="card-header">
+                                    <p class="card-title" class="leading-none">Prijava</p>
+                                    <p class="card-description" class="text-muted-foreground">Prijavite se u
+                                        svoj račun</p>
                                 </div>
-                                <div data-state="active" data-orientation="horizontal" role="tabpanel"
-                                    aria-labelledby="trigger-login" id="content-login"
-                                    tabindex="0" data-slot="tabs-content" class="flex-1 outline-none" style="">
-                                    <div data-slot="card"
-                                        class="bg-card card">
-                                        <div class="card-header">
-                                            <p class="card-title" class="leading-none">Prijava</p>
-                                            <p class="card-description" class="text-muted-foreground">Prijavite se u
-                                                svoj račun</p>
-                                        </div>
-                                        <div class="card-content">
-                                            <form class="space-y-4">
-                                                <div class="form-field">
-                                                    <label for="login-email">Email</label>
-                                                    <input id="login-email" type="email">
-                                                <div class="form-field">
-                                                    <label for="login-lozinka">Lozinka</label>
-                                                    <input id="login-lozinka" type="lozika">
-                                                </div>
-                                                <button type="submit" class="btn-base button-primary">Prijavi se</button>
-                                                <p class="text-sm text-muted-foreground text-center">Demo:
-                                                    admin@tvrtka.hr / demo123</p>
-                                            </form>
-                                        </div>
-                                    </div>
+                                <div class="card-content">
+                                    <form class="space-y-4">
+                                        <div class="form-field">
+                                            <label for="login-email">Email</label>
+                                            <input id="login-email" type="email">
+                                            <div class="form-field">
+                                                <label for="login-lozinka">Lozinka</label>
+                                                <input id="login-lozinka" type="lozika">
+                                            </div>
+                                            <button type="submit" class="btn-base button-primary">Prijavi se</button>
+                                            <p class="text-sm text-muted-foreground text-center">Demo:
+                                                admin@tvrtka.hr / demo123</p>
+                                    </form>
                                 </div>
-                                <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                                    aria-labelledby="trigger-register" hidden=""
-                                    id="content-register" tabindex="0" data-slot="tabs-content"
-                                    class="flex-1 outline-none">
-                                    <!-- Registration form will be added here in the future -->
-                                    <!-- Trenutno prazno: Registracija nije implementirana -->
-                                </div>
+                            </div>
+                        </div>
+                        <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                            aria-labelledby="trigger-register" hidden="" id="content-register" tabindex="0"
+                            data-slot="tabs-content" class="flex-1 outline-none">
+                            <div class="card-header">
+                                <p class="card-title" class="leading-none">Registracija</p>
+                                <p class="card-description" class="text-muted-foreground">Napravite novi račun</p>
+                            </div>
+                            <div class="card-content">
+                                <form class="space-y-4">
+                                    <div class="form-field">
+                                        <label for="login-ime">Ime i prezime</label>
+                                        <input id="login-ime" type="imeprezime">
+                                        <div class="form-field">
+                                            <label for="login-email">Email</label>
+                                            <input id="login-email" type="email">
+                                            <div class="form-field">
+                                                <label for="login-lozinka">Lozinka</label>
+                                                <input id="login-lozinka" type="lozika">
+                                            </div>
+                                            <button type="submit" class="btn-base button-primary">Registriraj
+                                                se</button>
+                                            <p class="text-sm text-muted-foreground text-center">Demo:
+                                                admin@tvrtka.hr / demo123</p>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -88,6 +104,4 @@
         </div>
     </div>
 </body>
-</html>
-
 </html>
