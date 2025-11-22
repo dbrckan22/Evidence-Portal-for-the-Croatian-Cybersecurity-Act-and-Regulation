@@ -31,7 +31,7 @@ body {
 }
 
 .auth-page {
-    background: #e8f1ff;
+    background: #deefff;
 }
 
 .card {
@@ -102,17 +102,29 @@ select,
 .button-primary {
     width: 100%;
     height: 42px;
-    background: #000000;
+    background: #272a2e;
     color: white;
     border-radius: 6px;
     border: none;
     cursor: pointer;
     font-weight: 500;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
-.button-primary:hover {
-    background: #000000;
+.button-secondary {
+    width: 100%;
+    height: 42px;
+    background: #272a2e;
+    color: white;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.button-primary:hover, .button-secondary:hover {
+    background: #424346;
 }
 
 .btn-base {
@@ -153,7 +165,7 @@ select,
 
 /* Base tab button styling */
 .tab-button {
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 10px 10px;
     font-size: 0.9rem;
     cursor: pointer;
@@ -162,23 +174,25 @@ select,
     color: #333;
     transition: all 0.2s ease-in-out;
     width: 50%;
+    margin: 1px;
 }
 
 /* Active tab */
 .tab-button[data-state="active"] {
-    background-color: #000000;
+    background-color: #272a2e;
     color: #ffffff;
 }
 
 /* Inactive tab */
 .tab-button[data-state="inactive"] {
-    background-color: transparent;
-    color: #444;
+    background-color: white;
+    color: rgb(145, 145, 145);
 }
 
 /* Optional: hover effect on inactive tabs */
 .tab-button[data-state="inactive"]:hover {
-    background-color: #dcdcdc;
+    background-color: #eff6ff;
+    color: black;
 }
 
 
