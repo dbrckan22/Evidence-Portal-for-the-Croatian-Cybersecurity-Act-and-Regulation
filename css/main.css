@@ -118,3 +118,11 @@ body {
     align-items: center;
     border-radius: 16px;
 }
+
+.text-secondary {
+    width: 100%;
+    color: rgb(68, 71, 82);
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 0%;
+}
