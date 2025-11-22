@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <title>
+        San Sunny
+    </title>
+    <meta charset="utf-8">
+    <meta name="application-name" content="HTML">
+    <meta name="description" content="SIS: sigurnosne obveze i odgovornosti">
+    <meta name="author" content="Sandra, Nika">
+    <meta name="keywords" content="HTML, CSS, FOI, sis, obveze">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <script src="js/app.js" defer></script>
+
+</head>
+
+<body>
+    <div id="container">
+                <div class="tailwind css-myl2ny css-10v5rb css-gs60ek auth-page">
+                    <div class="min-h-screen bg-blue-100 flex items-center justify-center p-4 app-wrapper layout-center-screen">
+                        <div class="w-full max-w-md">
+                            <div class="text-center mb-8">
+                                <div
+                                    class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-xl mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="lucide lucide-shield w-8 h-8 text-primary-foreground" aria-hidden="true">
+                                        <path
+                                            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h1>Sustav za upravljanje usklađenošću</h1>
+                                <p class="text-muted-foreground mt-2">Pratite obveze prema hrvatskom zakonu o
+                                    kibernetičkoj sigurnosti</p>
+                            </div>
+                            <div dir="ltr" data-orientation="horizontal" data-slot="tabs"
+                                class="flex flex-col gap-2 w-full">
+                                <div role="tablist" aria-orientation="horizontal" data-slot="tabs-list"
+                                    class="bg-muted text-muted-foreground h-9 items-center justify-center rounded-xl p-[3px] grid w-full grid-cols-2"
+                                    tabindex="0" data-orientation="horizontal" style="outline: none;">
+                                    <button type="button" role="tab" aria-selected="true"
+                                        aria-controls="radix-:r0:-content-login" data-state="active"
+                                        id="radix-:r0:-trigger-login" data-slot="tabs-trigger"
+                                        class="data-[state=active]:bg-card dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-xl border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+                                        data-value="login" tabindex="-1" data-orientation="horizontal"
+                                        data-radix-collection-item="">Prijava</button>
+                                    <button type="button" role="tab" aria-selected="false"
+                                        aria-controls="radix-:r0:-content-register" data-state="inactive"
+                                        id="radix-:r0:-trigger-register" data-slot="tabs-trigger"
+                                        class="data-[state=active]:bg-card dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-xl border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+                                        tabindex="-1" data-orientation="horizontal"
+                                        data-radix-collection-item="">Registracija</button>
+                                </div>
+                                <div data-state="active" data-orientation="horizontal" role="tabpanel"
+                                    aria-labelledby="radix-:r0:-trigger-login" id="radix-:r0:-content-login"
+                                    tabindex="0" data-slot="tabs-content" class="flex-1 outline-none" style="">
+                                    <div data-slot="card"
+                                        class="bg-card card">
+                                        <div data-slot="card-header"
+                                            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6">
+                                            <h4 data-slot="card-title" class="leading-none">Prijava</h4>
+                                            <p data-slot="card-description" class="text-muted-foreground">Prijavite se u
+                                                svoj račun</p>
+                                        </div>
+                                        <div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6">
+                                            <form class="space-y-4">
+                                                <div class="space-y-2 form-field">
+                                                    <label for="login-email">Email</label>
+                                                    <input id="login-email" type="email">
+                                                <div class="space-y-2 form-field">
+                                                    <label for="login-lozinka">Lozinka</label>
+                                                    <input id="login-lozinka" type="lozika">
+                                                </div>
+                                                <button type="submit" class="btn-base button-primary">Prijavi se</button>
+                                                <p class="text-sm text-muted-foreground text-center">Demo:
+                                                    admin@tvrtka.hr / demo123</p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                                    aria-labelledby="radix-:r0:-trigger-register" hidden=""
+                                    id="radix-:r0:-content-register" tabindex="0" data-slot="tabs-content"
+                                    class="flex-1 outline-none">
+                                    <!-- Registration form will be added here in the future -->
+                                    <!-- Trenutno prazno: Registracija nije implementirana -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section aria-label="Notifications alt+T" tabindex="-1" aria-live="polite"
+                        aria-relevant="additions text" aria-atomic="false"></section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <noscript data-nosnippet="">
+      <main style="height: 100vh; width: 100vw; background-color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <h1 style="font-size: 24px; padding: 8px; color: black">
+        This site requires JavaScript
+        </h1>
+        <p style="font-size: 16px; padding: 8px; color: #00000080">To view this website, enable JavaScript in your browser settings and reload the page.</p>
+        <form style="margin-top: 12px;" action="">
+          <button type="submit" style="font-size: 14px; color: black; border: 1px solid #0000001a; border-radius: 5px; width: 256px; height: 32px;">
+          Reload page
+          </button>
+        </form>
+</body>
+</html>
+
+</html>
