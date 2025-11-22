@@ -48,54 +48,75 @@
                                 id="trigger-register" data-slot="tabs-trigger" class="tab-button" tabindex="-1"
                                 data-orientation="horizontal">Registracija</button>
                         </div>
-                            <div class="bg-card card" data-state="active" data-orientation="horizontal" role="tabpanel"
-                                aria-labelledby="trigger-login" id="content-login" tabindex="0" data-slot="tabs-content"
-                                class="flex-1 outline-none">
-                                <div class="card-header">
-                                    <p class="card-title" class="leading-none">Prijava</p>
-                                    <p class="card-description" class="text-muted-foreground">Prijavite se u
-                                        svoj račun</p>
-                                </div>
-                                <div class="card-content">
-                                    <form class="space-y-4">
-                                        <div class="form-field">
-                                            <label for="login-email">Email</label>
-                                            <input id="login-email" type="email">                                    
-                                            <label for="login-lozinka">Lozinka</label>
-                                            <input id="login-lozinka" type="lozika">
-                                        </div>
-                                        <button type="submit" class="btn-base button-primary">Prijavi se</button>                                        
-                                    </form>
-                                </div>
+                        <div class="bg-card card" data-state="active" data-orientation="horizontal" role="tabpanel"
+                            aria-labelledby="trigger-login" id="content-login" tabindex="0" data-slot="tabs-content"
+                            class="flex-1 outline-none">
+                            <div class="card-header">
+                                <p class="card-title" class="leading-none">Prijava</p>
+                                <p class="card-description" class="text-muted-foreground">Prijavite se u svoj račun</p>
+                            </div>
+                            <div class="card-content">
+                                <form class="space-y-4">
+                                    <div class="form-field">
+                                        <label for="login-email">Email</label>
+                                        <input id="login-email" type="email">                                    
+                                        <label for="login-lozinka">Lozinka</label>
+                                        <input id="login-lozinka" type="lozika">
+                                    </div>
+                                    <button type="submit" class="btn-base button-primary">Prijavi se</button>                                        
+                                </form>
                             </div>
                         </div>
-                            <div class="bg-card card" data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                                aria-labelledby="trigger-register" hidden="" id="content-register" tabindex="0"
-                                data-slot="tabs-content" class="flex-1 outline-none">
-                                <div class="card-header">
-                                        <p class="card-title" class="leading-none">Registracija</p>
-                                        <p class="card-description" class="text-muted-foreground">Registrirajte novi račun</p>
-                                    </div>
-                                <div class="card-content">
-                                    <form class="space-y-4">
-                                        <div class="form-field">
-                                            <label for="register-ime">Ime</label>
-                                            <input id="register-ime" type="ime">
-                                            <label for="register-prezime">Prezime</label>
-                                            <input id="register-prezime" type="prezime">
-                                            <div class="decorated">
-                                                <label for="register-org">Organizacija</label>
-                                                <select id="register-org"></select>                                        
-                                            </div>
-                                            <label for="register-email">Email</label>
-                                            <input id="register-email" type="email">
-                                            <label for="register-lozinka">Lozinka</label>
-                                            <input id="register-lozinka" type="lozika">
-                                        </div>
-                                        <button type="submit" class="btn-base button-primary">Registriraj se</button>                            
-                                    </form>
-                                    <button type="button" class="btn-base button-secondary">Dodaj novu organizaciju</button>
+                        <div class="bg-card card" data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                            aria-labelledby="trigger-register" hidden="" id="content-register" tabindex="0"
+                            data-slot="tabs-content" class="flex-1 outline-none">
+                            <div class="card-header">
+                                    <p class="card-title" class="leading-none">Registracija</p>
+                                    <p class="card-description" class="text-muted-foreground">Registrirajte novi račun</p>
                                 </div>
+                            <div class="card-content">
+                                <form class="space-y-4">
+                                    <div class="form-field">
+                                        <label for="register-ime">Ime</label>
+                                        <input id="register-ime" type="ime">
+                                        <label for="register-prezime">Prezime</label>
+                                        <input id="register-prezime" type="prezime">
+                                        <div class="decorated">
+                                            <label for="register-org">Organizacija</label>
+                                            <select id="register-org"></select>                                        
+                                        </div>
+                                        <label for="register-email">Email</label>
+                                        <input id="register-email" type="email">
+                                        <label for="register-lozinka">Lozinka</label>
+                                        <input id="register-lozinka" type="lozika">
+                                    </div>
+                                    <button type="submit" class="btn-base button-primary">Registriraj se</button>                            
+                                </form>
+                                <button id="dodati-novu-org" type="button" class="btn-base button-secondary">Dodaj novu organizaciju</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-card card" data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                            aria-labelledby="trigger-new-org" hidden="" id="content-org-new" tabindex="0"
+                            data-slot="tabs-content" class="flex-1 outline-none">
+                            <div class="card-header">
+                                <button id="back-to-register" class="btn-back">&larr;</button>
+                                <p class="card-title">Nova organizacija</p>
+                                <p class="card-description">Registrirajte novu organizaciju</p>
+                            </div>
+
+                            <div class="card-content">
+                                <form class="space-y-4">
+                                    <div class="form-field">
+                                        <label for="org-oib">OIB</label>
+                                        <input id="org-oib" type="text">
+                                        <label for="org-name">Naziv organizacije</label>
+                                        <input id="org-name" type="text">
+                                        <label for="org-email">Kontakt email</label>
+                                        <input id="org-email" type="email">
+                                    </div>
+                                    <button type="submit" class="btn-base button-primary">Registriraj organizaciju</button>
+                                </form>
                             </div>
                         </div>
                     </div>
