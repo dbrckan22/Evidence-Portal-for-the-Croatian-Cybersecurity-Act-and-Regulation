@@ -21,17 +21,18 @@
                 <div class="tailwind css-myl2ny css-10v5rb css-gs60ek auth-page">
                     <div class="min-h-screen bg-blue-100 flex items-center justify-center p-4 app-wrapper layout-center-screen">
                         <div class="w-full max-w-md">
-                            <div class="text-center mb-8">
-                                <div
-                                    class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-xl mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="lucide lucide-shield w-8 h-8 text-primary-foreground" aria-hidden="true">
-                                        <path
-                                            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
-                                        </path>
-                                    </svg>
+                            <div>
+                                <div class="app-icon-area">
+                                    <div class="app-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
+                                            fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="lucide lucide-shield w-8 h-8 text-primary-foreground" aria-hidden="true">
+                                            <path
+                                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
+                                            </path>
+                                        </svg>
+                                    </div>
                                 </div>
                                 <h1>Sustav za upravljanje usklađenošću</h1>
                                 <p class="text-muted-foreground mt-2">Pratite obveze prema hrvatskom zakonu o
@@ -60,13 +61,12 @@
                                     tabindex="0" data-slot="tabs-content" class="flex-1 outline-none" style="">
                                     <div data-slot="card"
                                         class="bg-card card">
-                                        <div data-slot="card-header"
-                                            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6">
-                                            <h4 data-slot="card-title" class="leading-none">Prijava</h4>
-                                            <p data-slot="card-description" class="text-muted-foreground">Prijavite se u
+                                        <div class="card-header">
+                                            <h4 class="card-title" class="leading-none">Prijava</h4>
+                                            <p class="card-description" class="text-muted-foreground">Prijavite se u
                                                 svoj račun</p>
                                         </div>
-                                        <div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6">
+                                        <div class="card-content" class="px-6 [&amp;:last-child]:pb-6">
                                             <form class="space-y-4">
                                                 <div class="space-y-2 form-field">
                                                     <label for="login-email">Email</label>

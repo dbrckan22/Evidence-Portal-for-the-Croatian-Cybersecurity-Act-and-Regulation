@@ -39,7 +39,9 @@ body {
     background: #ffffff;
     border: 1px solid #e3e3e3;
     border-radius: 12px;
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
 }
 .card-header {
     margin-bottom: 16px;
@@ -99,4 +101,20 @@ body {
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
+}
+
+.app-icon-area {
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.app-icon {
+    height: 64px;
+    background-color: #000000;
+    width:64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
 }
