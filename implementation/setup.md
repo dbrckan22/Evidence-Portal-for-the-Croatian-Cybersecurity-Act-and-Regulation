@@ -7,7 +7,7 @@
 2. Kreiranje lokalne baze podataka
    * otvorite SQL Server Management Studio (ili bilo koji drugi alat po izboru)
    * kreirajte novu bazu podataka kako biste imali sve potrebne podatke lokalno
-   * uvezite .bak datoteku u bazu
+   * uvezite .bak datoteku u bazu (možete je pronaći u ovoj mapi pa je preuzimite odavde)
 
 3. Konfiguracija backend-a
    * otvorite datoteku appsettings.json (i appsettings.Development.json) u C# projektu
