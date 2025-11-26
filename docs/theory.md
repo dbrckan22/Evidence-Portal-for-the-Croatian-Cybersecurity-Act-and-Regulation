@@ -1,6 +1,6 @@
 ## Kibernetička sigurnost
 
-„Kibernetička sigurnost obuhvaća skup procesa, mjera i standarda kojima se jamči određena razina pouzdanost pri korištenju proizvoda i usluga u kibernetičkom prostoru, pri čemu sustavna zaštita računala i računalnih mreža, informatičke i informacijske infrastrukture, mobilnih uređaja i podataka od malicioznih napada tome značajno pridonosi.“ (MPUDT, bez dat.) Kibernetička sigurnost predstavlja skup mjera i postupaka kojima se štite računalni sustavi, mreže i podaci od napada, zlouporaba i drugih prijetnji. Cilj je osigurati da digitalne usluge i tehnologije rade pouzdano, sigurno i bez prekida te da se spriječi neovlašteni pristup i neovlaštena izmjena podataka.
+„Kibernetička sigurnost obuhvaća skup procesa, mjera i standarda kojima se jamči određena razina pouzdanost pri korištenju proizvoda i usluga u kibernetičkom prostoru, pri čemu sustavna zaštita računala i računalnih mreža, informatičke i informacijske infrastrukture, mobilnih uređaja i podataka od malicioznih napada tome značajno pridonosi.“ (MPUDT, bez dat.) <br> <br> Kibernetička sigurnost predstavlja skup mjera i postupaka kojima se štite računalni sustavi, mreže i podaci od napada, zlouporaba i drugih prijetnji. Cilj je osigurati da digitalne usluge i tehnologije rade pouzdano, sigurno i bez prekida te da se spriječi neovlašteni pristup i neovlaštena izmjena podataka.
 
 ## NIS2 direktiva
 
