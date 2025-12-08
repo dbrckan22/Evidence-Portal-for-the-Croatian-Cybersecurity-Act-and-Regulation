@@ -219,8 +219,8 @@ input.error, select.error {
 
 .btn-back {
     background: none;
-    font-size: 1.75rem;
-    border: 1px solid #93969b;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
     border-radius: 12px;
     cursor: pointer;
     margin-top: 10px;
