@@ -1,5 +1,5 @@
 body {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     margin: 0 auto;
     padding: 0;
     background-color: #f4f4f4;
@@ -38,9 +38,7 @@ body {
     background: #ffffff;
     border: 1px solid #e3e3e3;
     border-radius: 12px;
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-bottom: 24px;
+    padding: 24px;
 }
 .card-header {
     margin-bottom: 16px;
@@ -70,7 +68,6 @@ body {
 }
 
 .form-field select {
-    height: 30px;
     width: -webkit-fill-available;
     border: 1px solid #9aa1aa;
     border-radius: 12px;
@@ -81,6 +78,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#register-org {
+    height: 40px;
 }
 
 select:hover, select:focus {

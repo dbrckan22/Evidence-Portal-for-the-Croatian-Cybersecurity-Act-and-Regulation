@@ -2,11 +2,10 @@
 .header-container {
     position: sticky;
     top: 0;
-    background: rgba(217, 224, 233, 0.95);
+    background: oklch(.97 .014 254.604);
     backdrop-filter: blur(10px);
     z-index: 10;
     border-bottom: 1px solid #e3e3e3;
-    padding: 12px 0;
 }
 
 .container-center-sides {
@@ -58,6 +57,10 @@
     text-align: left;
 }
 
+.text-subtitle{
+    padding-top: 6px;
+}
+
 .header-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -104,7 +107,7 @@
 .main-container {
     width: 90%;
     max-width: 1400px;
-    margin: 24px auto;
+    margin: 12px auto;
     padding: 0 16px;
 }
 
@@ -124,7 +127,7 @@
 /* Categories Section */
 .categories-section {
     position: sticky;
-    top: 100px;
+    top: 85px;
 }
 
 .categories-card {
@@ -150,25 +153,12 @@
 .categories-list {
     overflow-y: auto;
     max-height: calc(100vh - 240px);
-    padding: 8px 0;
+    background: oklch(.97 .014 254.604);
+    border-radius: 8px;
 }
 
 .categories-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.categories-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.categories-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-}
-
-.categories-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    width: 0;
 }
 
 .loading-message {
@@ -184,7 +174,6 @@
     gap: 12px;
     padding: 12px;
     margin-bottom: 8px;
-    background: #f8f9fa;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
@@ -192,7 +181,7 @@
 }
 
 .category-item:hover {
-    background: #e9ecef;
+    background: oklch(.882 .059 254.128)
 }
 
 .category-item.selected {
@@ -266,13 +255,6 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
-
-.card {
-    background: #ffffff;
-    border: 1px solid #e3e3e3;
-    border-radius: 12px;
-    padding: 24px;
 }
 
 .card-header {
@@ -420,12 +402,20 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    align-items: center;
+}
+
+.upload-input {
+    padding: 12px !important;
+    width:min-content !important;
+    height: -webkit-fill-available !important;
 }
 
 .form-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    width: 100%;
 }
 
 .form-field label {
@@ -437,7 +427,6 @@
 .form-input,
 .form-select,
 .form-textarea {
-    width: 100%;
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -469,6 +458,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+}
+
+.date-field {
+    gap: 32px;
 }
 
 @media (max-width: 640px) {
