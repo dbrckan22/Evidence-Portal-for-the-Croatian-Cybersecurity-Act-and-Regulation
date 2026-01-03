@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showUploadForm();
     loadCategories();
+    loadComplianceSummary();
     setupEventListeners();
 });
 
@@ -51,7 +52,7 @@ async function loadCategories() {
     const categoriesList = document.getElementById('categories-list');
     
     try {
-        categoriesList.innerHTML = '<div class="loading-message">Učitavanje kategorija...</div>';
+        categoriesList.innerHTML = '<div class="loading-message">UÄitavanje kategorija...</div>';
         
         const response = await fetch(`${API_URL}/categories`);
         
@@ -72,12 +73,48 @@ async function loadCategories() {
         console.error('Error loading categories:', error);
         categoriesList.innerHTML = `
             <div class="loading-message" style="color: #dc2626;">
-                Greška pri učitavanju kategorija.<br>
+                GreÅ¡ka pri uÄitavanju kategorija.<br>
                 Provjerite je li backend pokrenut.
             </div>
         `;
-        showNotification('Greška pri učitavanju kategorija: ' + error.message, 'error');
+        showNotification('GreÅ¡ka pri uÄitavanju kategorija: ' + error.message, 'error');
     }
+}
+
+async function loadComplianceSummary() {
+    try {
+        const response = await fetch(`${API_URL}/compliance/summary?organizationId=${organizationId}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const summary = await response.json();
+        
+        updateProgressCard(summary);
+        
+    } catch (error) {
+        console.error('Error loading compliance summary:', error);
+    }
+}
+
+function updateProgressCard(summary) {
+    const progressSubtitle = document.getElementById('progress-subtitle');
+    const progressPercentage = document.getElementById('progress-percentage');
+    const progressFill = document.getElementById('progress-fill');
+    const statValid = document.getElementById('stat-valid');
+    const statExpiring = document.getElementById('stat-expiring');
+    const statExpired = document.getElementById('stat-expired');
+    const statMissing = document.getElementById('stat-missing');
+    
+    progressSubtitle.textContent = `${summary.coveredObligations} od ${summary.totalObligations} obveza pokriveno dokazima`;
+    progressPercentage.textContent = `${summary.coveragePercent}%`;
+    progressFill.style.width = `${summary.coveragePercent}%`;
+    
+    statValid.textContent = summary.valid;
+    statExpiring.textContent = summary.expiringSoon;
+    statExpired.textContent = summary.expired;
+    statMissing.textContent = summary.missing;
 }
 
 function renderCategories(categoriesData) {
@@ -130,7 +167,7 @@ async function loadObligations(categoryId) {
     const obligationsList = document.getElementById('obligations-list');
     
     try {
-        obligationsList.innerHTML = '<div class="loading-message">Učitavanje obveza...</div>';
+        obligationsList.innerHTML = '<div class="loading-message">UÄitavanje obveza...</div>';
         
         const response = await fetch(`${API_URL}/categories/${categoryId}/obligations`);
         
@@ -145,8 +182,8 @@ async function loadObligations(categoryId) {
         
     } catch (error) {
         console.error('Error loading obligations:', error);
-        obligationsList.innerHTML = '<div class="empty-state">Greška pri učitavanju obveza</div>';
-        showNotification('Greška pri učitavanju obveza: ' + error.message, 'error');
+        obligationsList.innerHTML = '<div class="empty-state">GreÅ¡ka pri uÄitavanju obveza</div>';
+        showNotification('GreÅ¡ka pri uÄitavanju obveza: ' + error.message, 'error');
     }
 }
 
@@ -201,7 +238,7 @@ async function loadEvidence(obligationId) {
     const evidenceList = document.getElementById('evidence-list');
     
     try {
-        evidenceList.innerHTML = '<div class="loading-message">Učitavanje dokaza...</div>';
+        evidenceList.innerHTML = '<div class="loading-message">UÄitavanje dokaza...</div>';
         
         const response = await fetch(`${API_URL}/evidence/obligation/${obligationId}?organizationId=${organizationId}`);
         
@@ -216,8 +253,8 @@ async function loadEvidence(obligationId) {
         
     } catch (error) {
         console.error('Error loading evidence:', error);
-        evidenceList.innerHTML = '<div class="empty-state">Greška pri učitavanju dokaza</div>';
-        showNotification('Greška pri učitavanju dokaza: ' + error.message, 'error');
+        evidenceList.innerHTML = '<div class="empty-state">GreÅ¡ka pri uÄitavanju dokaza</div>';
+        showNotification('GreÅ¡ka pri uÄitavanju dokaza: ' + error.message, 'error');
     }
 }
 
@@ -256,7 +293,7 @@ function renderEvidence(evidenceData) {
                 statusText = 'Isteklo';
             } else if (daysUntilExpiry < 30) {
                 statusClass = 'expiring';
-                statusText = `Ističe za ${daysUntilExpiry} dana`;
+                statusText = `IstiÄe za ${daysUntilExpiry} dana`;
             }
         }
         
@@ -320,7 +357,7 @@ function renderEvidence(evidenceData) {
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         </svg>
-                        Obriši
+                        ObriÅ¡i
                     </button>
                 </div>
             </div>
@@ -351,7 +388,7 @@ async function downloadEvidence(evidenceId) {
         const response = await fetch(`${API_URL}/evidence/download/${evidenceId}?organizationId=${organizationId}`);
         
         if (!response.ok) {
-            throw new Error('Greška pri preuzimanju');
+            throw new Error('GreÅ¡ka pri preuzimanju');
         }
         
         const blob = await response.blob();
@@ -364,15 +401,15 @@ async function downloadEvidence(evidenceId) {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        showNotification('Dokument uspješno preuzet', 'success');
+        showNotification('Dokument uspjeÅ¡no preuzet', 'success');
     } catch (error) {
         console.error('Error downloading evidence:', error);
-        showNotification('Greška pri preuzimanju dokumenta', 'error');
+        showNotification('GreÅ¡ka pri preuzimanju dokumenta', 'error');
     }
 }
 
 async function deleteEvidence(evidenceId) {
-    if (!confirm('Jeste li sigurni da želite obrisati ovaj dokaz?')) {
+    if (!confirm('Jeste li sigurni da Å¾elite obrisati ovaj dokaz?')) {
         return;
     }
     
@@ -382,16 +419,17 @@ async function deleteEvidence(evidenceId) {
         });
         
         if (!response.ok) {
-            throw new Error('Greška pri brisanju');
+            throw new Error('GreÅ¡ka pri brisanju');
         }
         
-        showNotification('Dokaz uspješno obrisan', 'success');
+        showNotification('Dokaz uspjeÅ¡no obrisan', 'success');
         
         await loadEvidence(selectedObligationId);
+        loadComplianceSummary();
         
     } catch (error) {
         console.error('Error deleting evidence:', error);
-        showNotification('Greška pri brisanju dokaza', 'error');
+        showNotification('GreÅ¡ka pri brisanju dokaza', 'error');
     }
 }
 
@@ -464,11 +502,12 @@ async function uploadWithFile(formData) {
         
         const result = await response.json();
         
-        showNotification('Dokaz uspješno uploadan!', 'success');
+        showNotification('Dokaz uspjeÅ¡no uploadan!', 'success');
         
         document.getElementById('upload-form').reset();
         
         loadCategories();
+        loadComplianceSummary();
         
         if (selectedCategoryId) {
             loadObligations(selectedCategoryId);
@@ -476,7 +515,7 @@ async function uploadWithFile(formData) {
         
     } catch (error) {
         console.error('Error uploading evidence:', error);
-        showNotification('Greška pri uploadu: ' + error.message, 'error');
+        showNotification('GreÅ¡ka pri uploadu: ' + error.message, 'error');
     }
 }
 
@@ -497,11 +536,12 @@ async function uploadWithoutFile(evidenceData) {
         
         const result = await response.json();
         
-        showNotification('Dokaz uspješno uploadan!', 'success');
+        showNotification('Dokaz uspjeÅ¡no uploadan!', 'success');
         
         document.getElementById('upload-form').reset();
         
         loadCategories();
+        loadComplianceSummary();
         
         if (selectedCategoryId) {
             loadObligations(selectedCategoryId);
@@ -509,7 +549,7 @@ async function uploadWithoutFile(evidenceData) {
         
     } catch (error) {
         console.error('Error uploading evidence:', error);
-        showNotification('Greška pri uploadu: ' + error.message, 'error');
+        showNotification('GreÅ¡ka pri uploadu: ' + error.message, 'error');
     }
 }
 
@@ -520,13 +560,13 @@ function handleLogout() {
 
 async function handleExport() {
     try {
-        showNotification('Izvještaj se generira...', 'info');
+        showNotification('IzvjeÅ¡taj se generira...', 'info');
         
-        showNotification('Export funkcionalnost još nije implementirana', 'info');
+        showNotification('Export funkcionalnost joÅ¡ nije implementirana', 'info');
         
     } catch (error) {
         console.error('Error exporting report:', error);
-        showNotification('Greška pri exportu izvještaja', 'error');
+        showNotification('GreÅ¡ka pri exportu izvjeÅ¡taja', 'error');
     }
 }
 
