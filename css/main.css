@@ -61,7 +61,7 @@ body {
 
 .form-field input {
     height: 40px;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(196 218 241);
     border-radius: 6px;
     padding: 0 12px;
     font-size: 1rem;
@@ -69,7 +69,7 @@ body {
 
 .form-field select {
     width: -webkit-fill-available;
-    border: 1px solid #9aa1aa;
+    border: 1px solid rgb(196 218 241);
     border-radius: 12px;
     margin-top: 6px;
     padding-left:12px;
@@ -85,8 +85,9 @@ body {
 }
 
 select:hover, select:focus {
-    border-color: #59748b;
-    box-shadow: 0 0 0 2px rgba(53, 53, 53, 0.25);
+    border-color: rgb(105 168 204);
+    box-shadow: 0 0 0 2px rgb(208 234 249);
+    background: #eaf7ff;
 }
 
 select,
@@ -224,7 +225,7 @@ input.error, select.error {
     border: 1px solid #ccc;
     border-radius: 12px;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 10px;
     width: 50px;
     display: flex;
     justify-content: center;
