@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         organizationId = 1;
     }
 
+    showUploadForm();
     loadCategories();
     setupEventListeners();
 });
@@ -33,6 +34,16 @@ function setupEventListeners() {
     const backToObligations = document.getElementById('back-to-obligations');
     backToObligations.addEventListener('click', () => {
         showObligationsView();
+    });
+
+    const backToUploadFromObligations = document.getElementById('back-to-upload-from-obligations');
+    backToUploadFromObligations.addEventListener('click', () => {
+        showUploadForm();
+    });
+
+    const logoButton = document.querySelector('.dash-button-logo');
+    logoButton.addEventListener('click', () => {
+        showUploadForm();
     });
 }
 
