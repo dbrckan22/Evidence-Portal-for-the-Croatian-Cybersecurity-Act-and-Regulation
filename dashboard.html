@@ -2,10 +2,10 @@
 <html lang="hr">
 
 <head>
-    <title>San Sunny - Nadzorna ploča</title>
+    <title>San Sunny - Nadzorna ploÄa</title>
     <meta charset="utf-8">
     <meta name="application-name" content="HTML">
-    <meta name="description" content="SIS: Nadzorna ploča - upravljanje sigurnosnim obvezama">
+    <meta name="description" content="SIS: Nadzorna ploća - upravljanje sigurnosnim obvezama">
     <meta name="author" content="Sandra, Nika">
     <meta name="keywords" content="HTML, CSS, FOI, sis, obveze, dashboard">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +45,7 @@
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <path d="m7 10 5 5 5-5"></path>
                         </svg>
-                        Export izvještaj
+                        Export izvještaja
                     </button>
                     <button data-slot="button" class="logo-obligation buttons-select" id="logout-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -66,89 +66,111 @@
     <main class="main-container">
         <div class="dashboard-layout">
             <!-- Left Section - Categories -->
-            <aside class="categories-section">
-                <div class="card categories-card">
-                    <div class="card-header">
-                        <h2 class="section-title">Kategorije obveza</h2>
-                        <p class="section-subtitle">Odaberite kategoriju za pregled obveza</p>
+            <div class="preview-obligations">
+                <aside class="categories-section">
+                    <div class="progress-section">
+                        <div class="card progress-card">
+                            <h3 class="card-title">Pregled usklađenosti</h3>
+                            <p class="card-subtitle" id="progress-subtitle">6 od 20 obveza pokriveno dokazima</p>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span>Pokrivenost</span>
+                                    <span class="progress-percentage" id="progress-percentage">30%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-item stat-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <span class="stat-label">Važeće</span>
+                                        <span class="stat-value" id="stat-valid">3</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item stat-warning">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <span class="stat-label">Uskoro ističe</span>
+                                        <span class="stat-value" id="stat-expiring">1</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item stat-error">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <span class="stat-label">Isteklo</span>
+                                        <span class="stat-value" id="stat-expired">2</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item stat-neutral">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <span class="stat-label">Nedostaje</span>
+                                        <span class="stat-value" id="stat-missing">14</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="categories-list" id="categories-list">
-                        <!-- Categories will be loaded dynamically -->
-                        <div class="loading-message">Učitavanje kategorija...</div>
-                    </div>
-                </div>
-            </aside>
+
+                    <div class="card categories-card">
+                        <div class="card-header">
+                            <h2 class="section-title">Kategorije obveza</h2>
+                            <p class="section-subtitle">Odaberite kategoriju za pregled obveza</p>
+                        </div>
+                        <div class="categories-list" id="categories-list">
+                            <!-- Categories will be loaded dynamically -->
+                            <div class="loading-message">Učitavanje kategorija...</div>
+                        </div>
+                    </div>        
+                </aside>
+            </div>
 
             <!-- Right Section - Upload Form -->
             <section class="upload-section">
-                <!-- Progress Overview -->
-                <div class="card progress-card">
-                    <h3 class="card-title">Pregled usklađenosti</h3>
-                    <p class="card-subtitle" id="progress-subtitle">6 od 20 obveza pokriveno dokazima</p>
-                    
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Pokrivenost</span>
-                            <span class="progress-percentage" id="progress-percentage">30%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progress-fill" style="width: 30%"></div>
-                        </div>
+                <!-- Obligations List -->
+                <div class="card" id="obligations-view" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title" id="obligations-title">Obveze</h3>
+                        <p class="card-subtitle" id="obligations-subtitle">Odaberite obvezu za pregled dokaza</p>
                     </div>
+                    <div id="obligations-list" class="obligations-list"></div>
+                </div>
 
-                    <div class="stats-grid">
-                        <div class="stat-item stat-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <div class="stat-content">
-                                <span class="stat-label">Važeće</span>
-                                <span class="stat-value" id="stat-valid">3</span>
-                            </div>
-                        </div>
-                        <div class="stat-item stat-warning">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="12"></line>
-                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                            </svg>
-                            <div class="stat-content">
-                                <span class="stat-label">Uskoro ističe</span>
-                                <span class="stat-value" id="stat-expiring">1</span>
-                            </div>
-                        </div>
-                        <div class="stat-item stat-error">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="15" y1="9" x2="9" y2="15"></line>
-                                <line x1="9" y1="9" x2="15" y2="15"></line>
-                            </svg>
-                            <div class="stat-content">
-                                <span class="stat-label">Isteklo</span>
-                                <span class="stat-value" id="stat-expired">2</span>
-                            </div>
-                        </div>
-                        <div class="stat-item stat-neutral">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="16" x2="12" y2="12"></line>
-                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                            </svg>
-                            <div class="stat-content">
-                                <span class="stat-label">Nedostaje</span>
-                                <span class="stat-value" id="stat-missing">14</span>
-                            </div>
-                        </div>
+                <!-- Evidence List -->
+                <div class="card" id="evidence-view" style="display: none;">
+                    <div class="card-header">
+                        <button id="back-to-obligations" class="btn-back">← Natrag na obveze</button>
+                        <h3 class="card-title" id="evidence-title">Dokazi</h3>
+                        <p class="card-subtitle" id="evidence-subtitle">Pregled dokaza za obvezu</p>
                     </div>
+                    <div id="evidence-list" class="evidence-list"></div>
                 </div>
 
                 <!-- Upload Form -->
@@ -164,7 +186,7 @@
                             <label for="obligation-select">Obveza *</label>
                             <select id="obligation-select" class="form-select" required>
                                 <option value="">Odaberite obvezu...</option>
-                                <!-- Will be populated dynamically based on selected category -->
+                                <!-- dinamcki -->
                             </select>
                         </div>
 
@@ -174,7 +196,7 @@
                                 <option value="document">Dokument (PDF, DOCX, XLSX)</option>
                                 <option value="screenshot">Slika/Screenshot (PNG, JPG)</option>
                                 <option value="link">Link (URL)</option>
-                                <option value="config">Konfiguracijski isječak</option>
+                                <option value="config">Konfiguracijski isjeÄak</option>
                                 <option value="attestation">Potvrda/Izjava</option>
                             </select>
                         </div>
