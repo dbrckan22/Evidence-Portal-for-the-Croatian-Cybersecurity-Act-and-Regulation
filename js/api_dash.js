@@ -3,22 +3,23 @@ const API_URL = "http://localhost:5059/api/v1";
 let categories = [];
 let selectedCategoryId = null;
 let obligations = [];
-let userId = null; // login sesija
+let selectedObligationId = null;
+let userId = null;
+let organizationId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // je li logged in
     userId = sessionStorage.getItem('userId');
+    organizationId = sessionStorage.getItem('organizationId');
+    
     if (!userId) {
-        // redirekt ak nije autentificiran
-        // window.location.href = '/index.html';
-        userId = 1; // za test, inace ovog nema
+        userId = 1;
+        organizationId = 1;
     }
 
     loadCategories();
     setupEventListeners();
 });
 
-// event listeners
 function setupEventListeners() {
     const uploadForm = document.getElementById('upload-form');
     uploadForm.addEventListener('submit', handleFormSubmit);
@@ -28,9 +29,13 @@ function setupEventListeners() {
 
     const exportButton = document.getElementById('export-button');
     exportButton.addEventListener('click', handleExport);
+
+    const backToObligations = document.getElementById('back-to-obligations');
+    backToObligations.addEventListener('click', () => {
+        showObligationsView();
+    });
 }
 
-// load kategorije s api
 async function loadCategories() {
     const categoriesList = document.getElementById('categories-list');
     
@@ -64,12 +69,10 @@ async function loadCategories() {
     }
 }
 
-// prikaz kategorija
 function renderCategories(categoriesData) {
     const categoriesList = document.getElementById('categories-list');
     
     categoriesList.innerHTML = categoriesData.map(category => {
-        // izracun progressa
         const completedCount = category.completedObligations || 0;
         const totalCount = category.totalObligations || category.obligationCount || 0;
         const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
@@ -101,26 +104,22 @@ function renderCategories(categoriesData) {
     }).join('');
 }
 
-// select kategorije
 async function selectCategory(categoryId) {
     selectedCategoryId = categoryId;
     
-    // update UI
     document.querySelectorAll('.category-item').forEach(item => {
         item.classList.remove('selected');
     });
     document.querySelector(`[data-category-id="${categoryId}"]`).classList.add('selected');
     
-    // load obligations za kategoriju
     await loadObligations(categoryId);
 }
 
-// load obligations za odabranu kategroriju
 async function loadObligations(categoryId) {
-    const obligationSelect = document.getElementById('obligation-select');
+    const obligationsList = document.getElementById('obligations-list');
     
     try {
-        obligationSelect.innerHTML = '<option value="">Učitavanje obveza...</option>';
+        obligationsList.innerHTML = '<div class="loading-message">Učitavanje obveza...</div>';
         
         const response = await fetch(`${API_URL}/categories/${categoryId}/obligations`);
         
@@ -130,33 +129,267 @@ async function loadObligations(categoryId) {
         
         obligations = await response.json();
         
-        if (obligations.length === 0) {
-            obligationSelect.innerHTML = '<option value="">Nema dostupnih obveza</option>';
-            return;
-        }
-        
-        obligationSelect.innerHTML = '<option value="">Odaberite obvezu...</option>' + 
-            obligations.map(obligation => 
-                `<option value="${obligation.obligationId || obligation.id}">
-                    ${obligation.title || obligation.name}
-                </option>`
-            ).join('');
+        showObligationsView();
+        renderObligations(obligations);
         
     } catch (error) {
         console.error('Error loading obligations:', error);
-        obligationSelect.innerHTML = '<option value="">Greška pri učitavanju obveza</option>';
+        obligationsList.innerHTML = '<div class="empty-state">Greška pri učitavanju obveza</div>';
         showNotification('Greška pri učitavanju obveza: ' + error.message, 'error');
     }
 }
 
-// handle horm submit za evidence
+function renderObligations(obligationsData) {
+    const obligationsList = document.getElementById('obligations-list');
+    
+    if (obligationsData.length === 0) {
+        obligationsList.innerHTML = `
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <p>Nema obveza za ovu kategoriju</p>
+            </div>
+        `;
+        return;
+    }
+    
+    obligationsList.innerHTML = obligationsData.map(obligation => `
+        <div class="obligation-item" onclick="selectObligation(${obligation.obligationId})">
+            <div class="obligation-header">
+                <div class="obligation-title">${obligation.title}</div>
+                <div class="obligation-code">${obligation.code}</div>
+            </div>
+            ${obligation.legalReference ? `
+                <div class="obligation-reference">
+                    <strong>Pravna referenca:</strong> ${obligation.legalReference}
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+async function selectObligation(obligationId) {
+    selectedObligationId = obligationId;
+    
+    const obligation = obligations.find(o => o.obligationId === obligationId);
+    
+    if (!obligation) return;
+    
+    document.getElementById('evidence-title').textContent = obligation.title;
+    document.getElementById('evidence-subtitle').textContent = obligation.legalReference || 'Dokazi za obvezu';
+    
+    await loadEvidence(obligationId);
+}
+
+async function loadEvidence(obligationId) {
+    const evidenceList = document.getElementById('evidence-list');
+    
+    try {
+        evidenceList.innerHTML = '<div class="loading-message">Učitavanje dokaza...</div>';
+        
+        const response = await fetch(`${API_URL}/evidence/obligation/${obligationId}?organizationId=${organizationId}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const evidence = await response.json();
+        
+        showEvidenceView();
+        renderEvidence(evidence);
+        
+    } catch (error) {
+        console.error('Error loading evidence:', error);
+        evidenceList.innerHTML = '<div class="empty-state">Greška pri učitavanju dokaza</div>';
+        showNotification('Greška pri učitavanju dokaza: ' + error.message, 'error');
+    }
+}
+
+function renderEvidence(evidenceData) {
+    const evidenceList = document.getElementById('evidence-list');
+    
+    if (evidenceData.length === 0) {
+        evidenceList.innerHTML = `
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <p>Nema dokaza za ovu obvezu</p>
+                <p style="font-size: 0.75rem; margin-top: 8px;">Koristite Upload formu za dodavanje dokaza</p>
+            </div>
+        `;
+        return;
+    }
+    
+    evidenceList.innerHTML = evidenceData.map(evidence => {
+        let statusClass = 'active';
+        let statusText = 'Aktivno';
+        
+        if (evidence.validUntil) {
+            const today = new Date();
+            const validUntil = new Date(evidence.validUntil);
+            const daysUntilExpiry = Math.ceil((validUntil - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysUntilExpiry < 0) {
+                statusClass = 'expired';
+                statusText = 'Isteklo';
+            } else if (daysUntilExpiry < 30) {
+                statusClass = 'expiring';
+                statusText = `Ističe za ${daysUntilExpiry} dana`;
+            }
+        }
+        
+        return `
+            <div class="evidence-item">
+                <div class="evidence-header">
+                    <div class="evidence-title">${evidence.title}</div>
+                    <div class="evidence-status ${statusClass}">${statusText}</div>
+                </div>
+                
+                <div class="evidence-details">
+                    <div class="evidence-detail">
+                        <span class="evidence-detail-label">Tip dokaza</span>
+                        <span>${evidence.evidenceType}</span>
+                    </div>
+                    <div class="evidence-detail">
+                        <span class="evidence-detail-label">Dodao</span>
+                        <span>${evidence.addedByUser}</span>
+                    </div>
+                    <div class="evidence-detail">
+                        <span class="evidence-detail-label">Datum uploada</span>
+                        <span>${new Date(evidence.createdAt).toLocaleDateString('hr-HR')}</span>
+                    </div>
+                    ${evidence.validUntil ? `
+                    <div class="evidence-detail">
+                        <span class="evidence-detail-label">Datum isteka</span>
+                        <span>${new Date(evidence.validUntil).toLocaleDateString('hr-HR')}</span>
+                    </div>
+                    ` : ''}
+                    ${evidence.fileName ? `
+                    <div class="evidence-detail">
+                        <span class="evidence-detail-label">Datoteka</span>
+                        <span>${evidence.fileName}</span>
+                    </div>
+                    ` : ''}
+                    ${evidence.note ? `
+                    <div class="evidence-detail" style="grid-column: 1 / -1;">
+                        <span class="evidence-detail-label">Napomena</span>
+                        <span>${evidence.note}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <div class="evidence-actions">
+                    ${evidence.fileName ? `
+                        <button class="btn-download" onclick="downloadEvidence(${evidence.evidenceId})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" 
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                 stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Preuzmi
+                        </button>
+                    ` : ''}
+                    <button class="btn-delete" onclick="deleteEvidence(${evidence.evidenceId})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" 
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                             stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Obriši
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function showObligationsView() {
+    document.getElementById('obligations-view').style.display = 'block';
+    document.getElementById('evidence-view').style.display = 'none';
+    document.getElementById('upload-form').parentElement.style.display = 'none';
+}
+
+function showEvidenceView() {
+    document.getElementById('obligations-view').style.display = 'none';
+    document.getElementById('evidence-view').style.display = 'block';
+    document.getElementById('upload-form').parentElement.style.display = 'none';
+}
+
+function showUploadForm() {
+    document.getElementById('obligations-view').style.display = 'none';
+    document.getElementById('evidence-view').style.display = 'none';
+    document.getElementById('upload-form').parentElement.style.display = 'block';
+}
+
+async function downloadEvidence(evidenceId) {
+    try {
+        const response = await fetch(`${API_URL}/evidence/download/${evidenceId}?organizationId=${organizationId}`);
+        
+        if (!response.ok) {
+            throw new Error('Greška pri preuzimanju');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'dokument';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showNotification('Dokument uspješno preuzet', 'success');
+    } catch (error) {
+        console.error('Error downloading evidence:', error);
+        showNotification('Greška pri preuzimanju dokumenta', 'error');
+    }
+}
+
+async function deleteEvidence(evidenceId) {
+    if (!confirm('Jeste li sigurni da želite obrisati ovaj dokaz?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/evidence/${evidenceId}?organizationId=${organizationId}`, {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+            throw new Error('Greška pri brisanju');
+        }
+        
+        showNotification('Dokaz uspješno obrisan', 'success');
+        
+        await loadEvidence(selectedObligationId);
+        
+    } catch (error) {
+        console.error('Error deleting evidence:', error);
+        showNotification('Greška pri brisanju dokaza', 'error');
+    }
+}
+
 async function handleFormSubmit(event) {
     event.preventDefault();
     
     const form = event.target;
     const formData = new FormData();
     
-    // get form values
     const obligationId = document.getElementById('obligation-select').value;
     const evidenceType = document.getElementById('evidence-type').value;
     const title = document.getElementById('title').value;
@@ -167,7 +400,6 @@ async function handleFormSubmit(event) {
     const validFrom = document.getElementById('valid-from').value;
     const validUntil = document.getElementById('valid-until').value;
     
-    // validacija
     if (!obligationId) {
         showNotification('Molimo odaberite obvezu', 'error');
         return;
@@ -183,7 +415,6 @@ async function handleFormSubmit(event) {
         return;
     }
     
-    // prepare data za api
     const evidenceData = {
         obligationId: parseInt(obligationId),
         userId: parseInt(userId),
@@ -192,14 +423,11 @@ async function handleFormSubmit(event) {
         note: description
     };
     
-    // optional fields
     if (linkUrl) evidenceData.linkUrl = linkUrl;
     if (validFrom) evidenceData.validFrom = new Date(validFrom).toISOString();
     if (validUntil) evidenceData.validUntil = new Date(validUntil).toISOString();
     
-    // ako postoji, poslati kao multipart/form-data
     if (file) {
-        // append all fields to FormData
         Object.keys(evidenceData).forEach(key => {
             formData.append(key, evidenceData[key]);
         });
@@ -207,18 +435,15 @@ async function handleFormSubmit(event) {
         
         await uploadWithFile(formData);
     } else {
-        // send as JSON if no file
         await uploadWithoutFile(evidenceData);
     }
 }
 
-// upload evidence s file
 async function uploadWithFile(formData) {
     try {
         const response = await fetch(`${API_URL}/evidence/upload`, {
             method: 'POST',
             body: formData
-            // ne! Content-Type header
         });
         
         if (!response.ok) {
@@ -230,13 +455,10 @@ async function uploadWithFile(formData) {
         
         showNotification('Dokaz uspješno uploadan!', 'success');
         
-        // reset form
         document.getElementById('upload-form').reset();
         
-        // reload kategorije za update
         loadCategories();
         
-        // ako je kategorija odabrana, reload obveze
         if (selectedCategoryId) {
             loadObligations(selectedCategoryId);
         }
@@ -247,7 +469,6 @@ async function uploadWithFile(formData) {
     }
 }
 
-// upload evidence bez file (URL only)
 async function uploadWithoutFile(evidenceData) {
     try {
         const response = await fetch(`${API_URL}/evidence/upload`, {
@@ -267,13 +488,10 @@ async function uploadWithoutFile(evidenceData) {
         
         showNotification('Dokaz uspješno uploadan!', 'success');
         
-        // reset form
         document.getElementById('upload-form').reset();
         
-        // reload 
         loadCategories();
         
-        // reload obligations
         if (selectedCategoryId) {
             loadObligations(selectedCategoryId);
         }
@@ -284,39 +502,16 @@ async function uploadWithoutFile(evidenceData) {
     }
 }
 
-// handle logout
 function handleLogout() {
     sessionStorage.clear();
     window.location.href = '/index.html';
 }
 
-// handle export
 async function handleExport() {
     try {
         showNotification('Izvještaj se generira...', 'info');
         
-        // TODO: kad se doda export
-        // call export API endpoint
-        // const response = await fetch(`${API_URL}/reports/export`, {
-        //    method: 'GET'
-        // });
-        
-        if (!response.ok) {
-            throw new Error('Export failed');
-        }
-        
-        // download
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `compliance-report-${new Date().toISOString().split('T')[0]}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        
-        showNotification('Izvještaj uspješno preuzet!', 'success');
+        showNotification('Export funkcionalnost još nije implementirana', 'info');
         
     } catch (error) {
         console.error('Error exporting report:', error);
@@ -324,7 +519,6 @@ async function handleExport() {
     }
 }
 
-// notification
 function showNotification(message, type = 'info') {
     const container = document.getElementById('notification-container');
     
@@ -334,7 +528,6 @@ function showNotification(message, type = 'info') {
     
     container.appendChild(notification);
     
-    // makni nakon 5 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease-out';
         setTimeout(() => {
@@ -343,5 +536,7 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// selectCategory global
 window.selectCategory = selectCategory;
+window.selectObligation = selectObligation;
+window.downloadEvidence = downloadEvidence;
+window.deleteEvidence = deleteEvidence;
