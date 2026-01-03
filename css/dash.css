@@ -113,9 +113,16 @@
 
 .dashboard-layout {
     display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 24px;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
     align-items: start;
+}
+
+@media (max-width: 1400px) {
+    .dashboard-layout {
+        grid-template-columns: 280px 1fr;
+        gap: 16px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -124,17 +131,18 @@
     }
 }
 
-/* Categories Section */
-.categories-section {
-    position: sticky;
-    top: 85px;
-}
-
 .categories-card {
-    max-height: calc(100vh - 140px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    height: 450px;
+    margin-top: 20px;
+}
+
+.preview-obligations {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .section-title {
@@ -230,6 +238,11 @@
     white-space: nowrap;
 }
 
+.progress-section {
+    position: sticky;
+    top: 85px;
+}
+
 .category-progress.complete {
     background: #d1fae5;
     color: #065f46;
@@ -320,7 +333,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
+    padding: 6px;
     border-radius: 8px;
     border: 1px solid #e3e3e3;
 }
@@ -406,7 +419,7 @@
 }
 
 .upload-input {
-    padding: 12px !important;
+    padding: 8px !important;
     width:min-content !important;
     height: -webkit-fill-available !important;
 }
@@ -445,7 +458,7 @@
 
 .form-textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 40px;
 }
 
 .form-hint {
@@ -561,4 +574,179 @@
     font-size: 0.75rem;
     color: #dc2626;
     margin-top: 4px;
+}
+.obligations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.obligation-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.obligation-item:hover {
+    border-color: #007bff;
+    background: #f8f9fa;
+}
+
+.obligation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.obligation-code {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #007bff;
+    padding: 4px 8px;
+    background: #e3f2fd;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.obligation-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    flex: 1;
+}
+
+.obligation-reference {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.evidence-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.evidence-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+}
+
+.evidence-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.evidence-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    flex: 1;
+}
+
+.evidence-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.evidence-status.active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.evidence-status.expiring {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.evidence-status.expired {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.evidence-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.evidence-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.evidence-detail-label {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.evidence-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-download,
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-download {
+    background: #007bff;
+    color: white;
+}
+
+.btn-download:hover {
+    background: #0056b3;
+}
+
+.btn-delete {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #991b1b;
+}
+
+.empty-state {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+}
+
+.empty-state svg {
+    margin: 0 auto 16px;
+    opacity: 0.5;
 }
