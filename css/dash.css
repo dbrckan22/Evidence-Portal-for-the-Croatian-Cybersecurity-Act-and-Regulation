@@ -751,3 +751,48 @@
     margin: 0 auto 16px;
     opacity: 0.5;
 }
+
+.obligation-search {
+    margin-bottom: 8px;
+}
+
+#obligation-select[size] {
+    height: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid rgb(196 218 241);
+    border-radius: 6px;
+    background: white;
+}
+
+#obligation-select[size] optgroup {
+    font-weight: 600;
+    color: #324454;
+    background: rgb(240 249 255);
+    padding: 8px 12px;
+    margin-top: 4px;
+}
+
+#obligation-select[size] optgroup:first-of-type {
+    margin-top: 0;
+}
+
+#obligation-select[size] option {
+    padding: 8px 12px 8px 24px;
+    cursor: pointer;
+}
+
+#obligation-select[size] option:hover {
+    background: rgb(208 234 249);
+}
+
+#obligation-select[size] option:checked {
+    background: rgb(105 168 204);
+    color: white;
+}
+
+
+
+
+
+
