@@ -125,11 +125,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // store user data za sesiju
-                if (data.userId || data.id) {
+                // store user data za sesiju
+                if (data.user) {
+                    sessionStorage.setItem('userId', data.user.userId);
+                    sessionStorage.setItem('organizationId', data.user.organizationId);
+                    sessionStorage.setItem('userEmail', data.user.email);
+                    sessionStorage.setItem('userName', data.user.name);
+                } else {
                     sessionStorage.setItem('userId', data.userId || data.id);
+                    sessionStorage.setItem('organizationId', data.organizationId || 1);
                     sessionStorage.setItem('userEmail', email);
                     sessionStorage.setItem('userName', data.name || '');
                 }
+
+                console.log('Login successful, stored:', {
+                    userId: sessionStorage.getItem('userId'),
+                    organizationId: sessionStorage.getItem('organizationId')
+                });
 
                 alert("Uspješna prijava!");
                 
