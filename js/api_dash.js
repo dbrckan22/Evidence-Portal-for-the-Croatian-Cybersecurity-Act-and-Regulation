@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showUploadForm();
     loadCategories();
     loadComplianceSummary();
+    loadObligationsForDropdown();
     setupEventListeners();
 });
 
@@ -52,9 +53,9 @@ async function loadCategories() {
     const categoriesList = document.getElementById('categories-list');
     
     try {
-        categoriesList.innerHTML = '<div class="loading-message">UÄitavanje kategorija...</div>';
+        categoriesList.innerHTML = '<div class="loading-message">Ucitavanje kategorija...</div>';
         
-        const response = await fetch(`${API_URL}/categories`);
+        const response = await fetch(`${API_URL}/compliance/categories?organizationId=${organizationId}`);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -73,11 +74,11 @@ async function loadCategories() {
         console.error('Error loading categories:', error);
         categoriesList.innerHTML = `
             <div class="loading-message" style="color: #dc2626;">
-                GreÅ¡ka pri uÄitavanju kategorija.<br>
+                Greška pri učitavanju kategorija.<br>
                 Provjerite je li backend pokrenut.
             </div>
         `;
-        showNotification('GreÅ¡ka pri uÄitavanju kategorija: ' + error.message, 'error');
+        showNotification('Greška pri učitavanju kategorija: ' + error.message, 'error');
     }
 }
 
@@ -117,12 +118,130 @@ function updateProgressCard(summary) {
     statMissing.textContent = summary.missing;
 }
 
+
+async function loadObligationsForDropdown() {
+    try {
+        const response = await fetch(`${API_URL}/compliance/tree`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const categoriesWithObligations = await response.json();
+        
+        renderObligationsDropdown(categoriesWithObligations);
+        setupSearchableSelect();
+        
+    } catch (error) {
+        console.error('Error loading obligations for dropdown:', error);
+    }
+}
+
+function renderObligationsDropdown(categoriesData) {
+    const obligationSelect = document.getElementById('obligation-select');
+    
+    obligationSelect.innerHTML = '<option value="">Odaberite obvezu...</option>';
+    
+    categoriesData.forEach(category => {
+        if (category.obligations && category.obligations.length > 0) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = category.name;
+            
+            category.obligations.forEach(obligation => {
+                const option = document.createElement('option');
+                option.value = obligation.obligationId;
+                option.textContent = obligation.title;
+                option.setAttribute('data-category', category.name);
+                optgroup.appendChild(option);
+            });
+            
+            obligationSelect.appendChild(optgroup);
+        }
+    });
+}
+
+function setupSearchableSelect() {
+    const obligationSelect = document.getElementById('obligation-select');
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.className = 'form-input obligation-search';
+    searchInput.placeholder = 'Pretrazite obveze...';
+    searchInput.id = 'obligation-search';
+    
+    obligationSelect.parentElement.insertBefore(searchInput, obligationSelect);
+    
+    obligationSelect.size = 8;
+    obligationSelect.style.display = 'none';
+    
+    let allOptions = Array.from(obligationSelect.querySelectorAll('option:not([value=""])'));
+    
+    searchInput.addEventListener('focus', () => {
+        obligationSelect.style.display = 'block';
+    });
+    
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        obligationSelect.querySelectorAll('optgroup').forEach(optgroup => {
+            optgroup.remove();
+        });
+        
+        obligationSelect.innerHTML = '<option value="">Odaberite obvezu...</option>';
+        
+        const categoriesMap = new Map();
+        
+        allOptions.forEach(option => {
+            const text = option.textContent.toLowerCase();
+            const category = option.getAttribute('data-category');
+            
+            if (text.includes(searchTerm)) {
+                if (!categoriesMap.has(category)) {
+                    categoriesMap.set(category, []);
+                }
+                categoriesMap.get(category).push(option.cloneNode(true));
+            }
+        });
+        
+        categoriesMap.forEach((options, categoryName) => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = categoryName;
+            options.forEach(option => optgroup.appendChild(option));
+            obligationSelect.appendChild(optgroup);
+        });
+        
+        if (categoriesMap.size > 0) {
+            obligationSelect.style.display = 'block';
+        }
+    });
+    
+    obligationSelect.addEventListener('change', (e) => {
+        const selectedOption = obligationSelect.options[obligationSelect.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            searchInput.value = selectedOption.textContent;
+            obligationSelect.style.display = 'none';
+        }
+    });
+    
+    obligationSelect.addEventListener('click', (e) => {
+        if (e.target.tagName === 'OPTION' && e.target.value) {
+            searchInput.value = e.target.textContent;
+            obligationSelect.value = e.target.value;
+            obligationSelect.style.display = 'none';
+        }
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (e.target !== searchInput && e.target !== obligationSelect && !obligationSelect.contains(e.target)) {
+            obligationSelect.style.display = 'none';
+        }
+    });
+}
 function renderCategories(categoriesData) {
     const categoriesList = document.getElementById('categories-list');
     
     categoriesList.innerHTML = categoriesData.map(category => {
-        const completedCount = category.completedObligations || 0;
-        const totalCount = category.totalObligations || category.obligationCount || 0;
+        const completedCount = category.summary?.coveredObligations || 0;
+        const totalCount = category.summary?.totalObligations || 0;
         const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
         
         let progressClass = 'none';
@@ -142,7 +261,7 @@ function renderCategories(categoriesData) {
                 </div>
                 <div class="category-content">
                     <div class="category-header">
-                        <span class="category-name">${category.name || category.title}</span>
+                        <span class="category-name">${category.categoryName || category.name}</span>
                         <span class="category-progress ${progressClass}">${progressPercent}%</span>
                     </div>
                     <div class="category-obligations">${completedCount}/${totalCount} obveza</div>
@@ -167,7 +286,7 @@ async function loadObligations(categoryId) {
     const obligationsList = document.getElementById('obligations-list');
     
     try {
-        obligationsList.innerHTML = '<div class="loading-message">UÄitavanje obveza...</div>';
+        obligationsList.innerHTML = '<div class="loading-message">Učitavanje obveza...</div>';
         
         const response = await fetch(`${API_URL}/categories/${categoryId}/obligations`);
         
@@ -182,8 +301,8 @@ async function loadObligations(categoryId) {
         
     } catch (error) {
         console.error('Error loading obligations:', error);
-        obligationsList.innerHTML = '<div class="empty-state">GreÅ¡ka pri uÄitavanju obveza</div>';
-        showNotification('GreÅ¡ka pri uÄitavanju obveza: ' + error.message, 'error');
+        obligationsList.innerHTML = '<div class="empty-state">Greška pri učitavanju obveza</div>';
+        showNotification('Greška pri učitavanju obveza: ' + error.message, 'error');
     }
 }
 
@@ -238,7 +357,7 @@ async function loadEvidence(obligationId) {
     const evidenceList = document.getElementById('evidence-list');
     
     try {
-        evidenceList.innerHTML = '<div class="loading-message">UÄitavanje dokaza...</div>';
+        evidenceList.innerHTML = '<div class="loading-message">Učitavanje dokaza...</div>';
         
         const response = await fetch(`${API_URL}/evidence/obligation/${obligationId}?organizationId=${organizationId}`);
         
@@ -253,8 +372,8 @@ async function loadEvidence(obligationId) {
         
     } catch (error) {
         console.error('Error loading evidence:', error);
-        evidenceList.innerHTML = '<div class="empty-state">GreÅ¡ka pri uÄitavanju dokaza</div>';
-        showNotification('GreÅ¡ka pri uÄitavanju dokaza: ' + error.message, 'error');
+        evidenceList.innerHTML = '<div class="empty-state">Greška pri učitavanju dokaza</div>';
+        showNotification('Greška pri učitavanju dokaza: ' + error.message, 'error');
     }
 }
 
@@ -293,7 +412,7 @@ function renderEvidence(evidenceData) {
                 statusText = 'Isteklo';
             } else if (daysUntilExpiry < 30) {
                 statusClass = 'expiring';
-                statusText = `IstiÄe za ${daysUntilExpiry} dana`;
+                statusText = `Ističe za ${daysUntilExpiry} dana`;
             }
         }
         
@@ -357,7 +476,7 @@ function renderEvidence(evidenceData) {
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         </svg>
-                        ObriÅ¡i
+                        Obrisi
                     </button>
                 </div>
             </div>
@@ -388,7 +507,7 @@ async function downloadEvidence(evidenceId) {
         const response = await fetch(`${API_URL}/evidence/download/${evidenceId}?organizationId=${organizationId}`);
         
         if (!response.ok) {
-            throw new Error('GreÅ¡ka pri preuzimanju');
+            throw new Error('Greška pri preuzimanju');
         }
         
         const blob = await response.blob();
@@ -401,15 +520,15 @@ async function downloadEvidence(evidenceId) {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        showNotification('Dokument uspjeÅ¡no preuzet', 'success');
+        showNotification('Dokument uspješno preuzet', 'success');
     } catch (error) {
         console.error('Error downloading evidence:', error);
-        showNotification('GreÅ¡ka pri preuzimanju dokumenta', 'error');
+        showNotification('Greška pri preuzimanju dokumenta', 'error');
     }
 }
 
 async function deleteEvidence(evidenceId) {
-    if (!confirm('Jeste li sigurni da Å¾elite obrisati ovaj dokaz?')) {
+    if (!confirm('Jeste li sigurni da zelite obrisati ovaj dokaz?')) {
         return;
     }
     
@@ -419,17 +538,17 @@ async function deleteEvidence(evidenceId) {
         });
         
         if (!response.ok) {
-            throw new Error('GreÅ¡ka pri brisanju');
+            throw new Error('Greška pri brisanju');
         }
-        
-        showNotification('Dokaz uspjeÅ¡no obrisan', 'success');
-        
+
+        showNotification('Dokaz uspješno obrisan', 'success');
+
         await loadEvidence(selectedObligationId);
         loadComplianceSummary();
         
     } catch (error) {
         console.error('Error deleting evidence:', error);
-        showNotification('GreÅ¡ka pri brisanju dokaza', 'error');
+        showNotification('Greška pri brisanju dokaza', 'error');
     }
 }
 
@@ -449,6 +568,16 @@ async function handleFormSubmit(event) {
     const validFrom = document.getElementById('valid-from').value;
     const validUntil = document.getElementById('valid-until').value;
     
+    console.log('Form submission:', {
+        obligationId,
+        userId,
+        organizationId,
+        evidenceType,
+        title,
+        hasFile: !!file,
+        linkUrl
+    });
+    
     if (!obligationId) {
         showNotification('Molimo odaberite obvezu', 'error');
         return;
@@ -465,22 +594,22 @@ async function handleFormSubmit(event) {
     }
     
     const evidenceData = {
-        obligationId: parseInt(obligationId),
-        userId: parseInt(userId),
-        evidenceType: evidenceType,
-        title: title,
-        note: description
+        ObligationId: parseInt(obligationId),
+        UserId: parseInt(userId),
+        EvidenceType: evidenceType,
+        Title: title,
+        Note: description
     };
     
-    if (linkUrl) evidenceData.linkUrl = linkUrl;
-    if (validFrom) evidenceData.validFrom = new Date(validFrom).toISOString();
-    if (validUntil) evidenceData.validUntil = new Date(validUntil).toISOString();
+    if (linkUrl) evidenceData.LinkUrl = linkUrl;
+    if (validFrom) evidenceData.ValidFrom = new Date(validFrom).toISOString();
+    if (validUntil) evidenceData.ValidUntil = new Date(validUntil).toISOString();
     
     if (file) {
         Object.keys(evidenceData).forEach(key => {
             formData.append(key, evidenceData[key]);
         });
-        formData.append('file', file);
+        formData.append('File', file);
         
         await uploadWithFile(formData);
     } else {
@@ -490,7 +619,7 @@ async function handleFormSubmit(event) {
 
 async function uploadWithFile(formData) {
     try {
-        const response = await fetch(`${API_URL}/evidence/upload`, {
+        const response = await fetch(`${API_URL}/evidence/evidence/upload`, {
             method: 'POST',
             body: formData
         });
@@ -502,9 +631,11 @@ async function uploadWithFile(formData) {
         
         const result = await response.json();
         
-        showNotification('Dokaz uspjeÅ¡no uploadan!', 'success');
+        showNotification('Dokaz uspješno uploadan!', 'success');
         
         document.getElementById('upload-form').reset();
+        const searchInput = document.getElementById("obligation-search");
+        if (searchInput) searchInput.value = "";
         
         loadCategories();
         loadComplianceSummary();
@@ -515,13 +646,13 @@ async function uploadWithFile(formData) {
         
     } catch (error) {
         console.error('Error uploading evidence:', error);
-        showNotification('GreÅ¡ka pri uploadu: ' + error.message, 'error');
+        showNotification('Greška pri uploadu: ' + error.message, 'error');
     }
 }
 
 async function uploadWithoutFile(evidenceData) {
     try {
-        const response = await fetch(`${API_URL}/evidence/upload`, {
+        const response = await fetch(`${API_URL}/evidence/evidence/upload`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -536,9 +667,11 @@ async function uploadWithoutFile(evidenceData) {
         
         const result = await response.json();
         
-        showNotification('Dokaz uspjeÅ¡no uploadan!', 'success');
+        showNotification('Dokaz uspješno uploadan!', 'success');
         
         document.getElementById('upload-form').reset();
+        const searchInput = document.getElementById("obligation-search");
+        if (searchInput) searchInput.value = "";
         
         loadCategories();
         loadComplianceSummary();
@@ -549,24 +682,24 @@ async function uploadWithoutFile(evidenceData) {
         
     } catch (error) {
         console.error('Error uploading evidence:', error);
-        showNotification('GreÅ¡ka pri uploadu: ' + error.message, 'error');
+        showNotification('Greška pri uploadu: ' + error.message, 'error');
     }
 }
 
 function handleLogout() {
     sessionStorage.clear();
-    window.location.href = '/index.html';
+    window.location.href = 'index.html';
 }
 
 async function handleExport() {
     try {
-        showNotification('IzvjeÅ¡taj se generira...', 'info');
+        showNotification('Izvjestaj se generira...', 'info');
         
-        showNotification('Export funkcionalnost joÅ¡ nije implementirana', 'info');
+        showNotification('Export funkcionalnost jos nije implementirana', 'info');
         
     } catch (error) {
         console.error('Error exporting report:', error);
-        showNotification('GreÅ¡ka pri exportu izvjeÅ¡taja', 'error');
+        showNotification('Greška pri exportu izvjestaja', 'error');
     }
 }
 
