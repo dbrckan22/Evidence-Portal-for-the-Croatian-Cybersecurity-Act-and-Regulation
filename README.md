@@ -39,3 +39,6 @@ Projekt će biti razvijen korištenjem modernih tehnologija i alata za izradu we
 - **HTML** - struktura i sadržaj korisničkog sučelja
 - **CSS** - oblikovanje i vizualni dizajn elemenata aplikacije
 - **JavaScript** - interaktivnost i dinamičko ponašanje elemenata sučelja
+
+**Napomena:** backend se nalazi u <a href="https://github.com/dbrckan22/Evidence-Portal-for-the-Croatian-Cybersecurity-Act-and-Regulation" target="_blank">posebnom repozitoriju</a>.
+
