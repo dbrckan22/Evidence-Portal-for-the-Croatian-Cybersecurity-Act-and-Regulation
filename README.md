@@ -35,6 +35,8 @@ Projekt će biti razvijen korištenjem modernih tehnologija i alata za izradu we
 - **SQL Server** - relacijska baza podataka za pohranu obveza, dokaza...
 - **SSMS (SQL Server Management Studio)** - alat za administraciju i upravljanje bazom podataka
 
+**Napomena:** kod frontenda se nalazi na grani "Frontend".
+
 <img width="23" height="23" alt="frontend" src="https://github.com/user-attachments/assets/c370dd89-a03f-4480-9936-0b31250f9f42" /> **Frontend**:
 - **HTML** - struktura i sadržaj korisničkog sučelja
 - **CSS** - oblikovanje i vizualni dizajn elemenata aplikacije
