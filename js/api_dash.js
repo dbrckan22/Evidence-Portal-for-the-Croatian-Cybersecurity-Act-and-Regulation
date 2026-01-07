@@ -538,7 +538,7 @@ async function downloadEvidence(evidenceId) {
             }
         }
 
-        a.download = getDownloadFileName(evidence);
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -553,13 +553,13 @@ async function downloadEvidence(evidenceId) {
 
 function getDownloadFileName(evidence) {
     const category = categories.find(c => c.categoryId === selectedCategoryId);
-    const categoryName = sanitizeForFilename(category?.categoryName || 'Kategorija');
+    const categoryName = category ? category.categoryName.replace(/[^a-zA-Z0-9 \-]/g, '').trim() : 'Kategorija';
 
     let fileName = evidence.fileName || evidence.title || 'dokument';
     if (fileName.includes('_')) {
         fileName = fileName.split('_').slice(1).join('_'); 
     }
-    fileName = sanitizeForFilename(fileName);
+    fileName = fileName.replace(/[^a-zA-Z0-9 \-_.]/g, '').trim();
 
     const hasExt = /\.[a-z0-9]+$/i.test(fileName);
     if (!hasExt) {
@@ -576,15 +576,6 @@ function getDownloadFileName(evidence) {
     }
 
     return `${categoryName}_${fileName}`;
-}
-
-function sanitizeForFilename(text) {
-    if (!text) return '';
-    const map = { 'č': 'c', 'š': 's', 'ć': 'c', 'ž': 'z', 'đ': 'd', 'Č': 'C', 'Š': 'S', 'Ć': 'C', 'Ž': 'Z', 'Đ': 'D' };
-    text = text.replace(/[čšćžđČŠĆŽĐ]/g, m => map[m]);
-    text = text.replace(/\s+/g, '_'); 
-    text = text.replace(/[^a-zA-Z0-9_\-\.]/g, ''); 
-    return text;
 }
 
 async function deleteEvidence(evidenceId) {
