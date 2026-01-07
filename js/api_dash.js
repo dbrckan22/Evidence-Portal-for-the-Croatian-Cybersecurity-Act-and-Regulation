@@ -165,7 +165,7 @@ function setupSearchableSelect() {
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.className = 'form-input obligation-search';
-    searchInput.placeholder = 'Pretrazite obveze...';
+    searchInput.placeholder = 'Pretražite obveze...';
     searchInput.id = 'obligation-search';
     
     obligationSelect.parentElement.insertBefore(searchInput, obligationSelect);
@@ -476,7 +476,7 @@ function renderEvidence(evidenceData) {
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         </svg>
-                        Obrisi
+                        Obriši
                     </button>
                 </div>
             </div>
@@ -504,27 +504,87 @@ function showUploadForm() {
 
 async function downloadEvidence(evidenceId) {
     try {
-        const response = await fetch(`${API_URL}/evidence/download/${evidenceId}?organizationId=${organizationId}`);
-        
-        if (!response.ok) {
-            throw new Error('Greška pri preuzimanju');
+        const evidence = (await fetch(`${API_URL}/evidence/obligation/${selectedObligationId}?organizationId=${organizationId}`)
+            .then(res => res.json()))
+            .find(e => e.evidenceId === evidenceId);
+
+        if (!evidence) throw new Error("Dokaz nije pronađen");
+
+        if (evidence.evidenceType === 'link') {
+            window.open(evidence.linkUrl, '_blank');
+            return;
         }
-        
+
+        const response = await fetch(`${API_URL}/evidence/download/${evidenceId}?organizationId=${organizationId}`);
+
+        if (!response.ok) throw new Error('Greška pri preuzimanju');
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'dokument';
+
+        let filename = evidence.fileName || 'dokument';
+        if (!filename.includes('.')) {
+            switch (evidence.evidenceType) {
+                case 'document':
+                case 'config':
+                case 'attestation':
+                    filename += '.pdf';
+                    break;
+                case 'screenshot':
+                    filename += '.png';
+                    break;
+            }
+        }
+
+        a.download = getDownloadFileName(evidence);
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-        
+
         showNotification('Dokument uspješno preuzet', 'success');
     } catch (error) {
         console.error('Error downloading evidence:', error);
         showNotification('Greška pri preuzimanju dokumenta', 'error');
     }
+}
+
+function getDownloadFileName(evidence) {
+    const category = categories.find(c => c.categoryId === selectedCategoryId);
+    const categoryName = sanitizeForFilename(category?.categoryName || 'Kategorija');
+
+    let fileName = evidence.fileName || evidence.title || 'dokument';
+    if (fileName.includes('_')) {
+        fileName = fileName.split('_').slice(1).join('_'); 
+    }
+    fileName = sanitizeForFilename(fileName);
+
+    const hasExt = /\.[a-z0-9]+$/i.test(fileName);
+    if (!hasExt) {
+        switch (evidence.evidenceType) {
+            case 'document':
+            case 'config':
+            case 'attestation':
+                fileName += '.pdf';
+                break;
+            case 'screenshot':
+                fileName += '.png';
+                break;
+        }
+    }
+
+    return `${categoryName}_${fileName}`;
+}
+
+function sanitizeForFilename(text) {
+    if (!text) return '';
+    const map = { 'č': 'c', 'š': 's', 'ć': 'c', 'ž': 'z', 'đ': 'd', 'Č': 'C', 'Š': 'S', 'Ć': 'C', 'Ž': 'Z', 'Đ': 'D' };
+    text = text.replace(/[čšćžđČŠĆŽĐ]/g, m => map[m]);
+    text = text.replace(/\s+/g, '_'); 
+    text = text.replace(/[^a-zA-Z0-9_\-\.]/g, ''); 
+    return text;
 }
 
 async function deleteEvidence(evidenceId) {
