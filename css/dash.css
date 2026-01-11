@@ -238,7 +238,7 @@
 }
 
 .progress-section {
-    position: sticky;
+   /* position: sticky; */
     top: 85px;
 }
 

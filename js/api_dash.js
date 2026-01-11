@@ -832,7 +832,7 @@ async function renderExportCategories() {
                     <span class="category-name">${cat.categoryName || cat.name}</span>
                 </label>
                 <div class="category-info">
-                    ${cat.summary?.totalObligations || 0} obveza * ${cat.summary?.coveredObligations || 0} dokaza
+                    ${cat.summary?.totalObligations || 0} obveza • ${cat.summary?.coveredObligations || 0} dokaza
                 </div>
             </div>
         `).join('');
@@ -889,14 +889,43 @@ function setupExportCategoryButtons() {
     selectAllBtn.addEventListener('click', () => {
         const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
         checkboxes.forEach(cb => cb.checked = true);
+        updateExportSummary();
     });
 
     deselectAllBtn.addEventListener('click', () => {
         const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
         checkboxes.forEach(cb => cb.checked = false);
+        updateExportSummary();
     });
+
+    const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.addEventListener('change', updateExportSummary));
+
+    updateExportSummary();
 }
 
+function updateExportSummary() {
+    const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
+    const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+    const totalCategories = checkboxes.length;
+
+    let totalObligations = 0;
+    let totalEvidence = 0;
+
+    checkedBoxes.forEach(cb => {
+        const card = cb.closest('.export-category-card');
+        const infoText = card.querySelector('.category-info').textContent;
+        const match = infoText.match(/(\d+)\s+obveza\s*•\s*(\d+)\s+dokaza/);
+        if (match) {
+            totalObligations += parseInt(match[1]);
+            totalEvidence += parseInt(match[2]);
+        }
+    });
+
+    document.getElementById('summary-categories').textContent = `${checkedBoxes.length}/${totalCategories}`;
+    document.getElementById('summary-obligations').textContent = totalObligations;
+    document.getElementById('summary-evidence').textContent = totalEvidence;
+}
 
 window.selectCategory = selectCategory;
 window.selectObligation = selectObligation;

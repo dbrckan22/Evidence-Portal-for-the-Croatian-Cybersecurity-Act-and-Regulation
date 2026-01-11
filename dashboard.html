@@ -317,9 +317,31 @@
 
             <hr style="margin: 20px 0; border: 1px solid #ccc;">
 
+            <div id="export-summary" class="export-summary" style="
+                border: 1px solid #ccc;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 12px;
+                font-size: 0.875rem;
+                background: #f9f9f9;
+            ">
+                <strong>Sažetak exporta:</strong>
+                <div>Kategorije: <span id="summary-categories">0/0</span></div>
+                <div>Obveze: <span id="summary-obligations">0</span></div>
+                <div>Dokazi: <span id="summary-evidence">0</span></div>
+            </div>
+
             <div class="modal-footer">
                 <button id="cancel-export" class="btn-submit btn-cancel">Odustani</button>
-                <button id="generate-export" class="btn-submit">Generiraj i preuzmi izvještaj</button>
+                <button id="generate-export" class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-download w-4 h-4 mr-2" aria-hidden="true">
+                            <path d="M12 15V3"></path>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <path d="m7 10 5 5 5-5"></path>
+                    </svg>
+                    Generiraj i preuzmi izvještaj</button>
             </div>
         </div>
     </div>
