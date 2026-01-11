@@ -7,6 +7,11 @@ let selectedObligationId = null;
 let userId = null;
 let organizationId = null;
 
+const exportModal = document.getElementById('export-modal');
+const generateExportButton = document.getElementById('generate-export');
+const cancelExportButton = document.getElementById('cancel-export');
+const closeExportButton = exportModal.querySelector('.close-button');
+
 document.addEventListener("DOMContentLoaded", () => {
     userId = sessionStorage.getItem('userId');
     organizationId = sessionStorage.getItem('organizationId');
@@ -31,7 +36,39 @@ function setupEventListeners() {
     logoutButton.addEventListener('click', handleLogout);
 
     const exportButton = document.getElementById('export-button');
-    exportButton.addEventListener('click', handleExport);
+    exportButton.addEventListener('click', async () => {
+        await renderExportCategories(); 
+        setupExportCategoryButtons();
+        exportModal.style.display = 'block'; 
+    });
+
+
+    generateExportButton.addEventListener('click', async () => {
+        const checkedCategoryInputs = document.querySelectorAll('#export-categories input[type="checkbox"]:checked');
+        const categoryIds = Array.from(checkedCategoryInputs).map(input => parseInt(input.value));
+
+        if (categoryIds.length === 0) {
+            showNotification('Molimo odaberite barem jednu kategoriju', 'error');
+            return;
+        }
+
+        const includeExpired = document.getElementById('include-expired').checked;
+        const includeMetadata = document.getElementById('include-metadata').checked;
+
+        await exportReport(categoryIds, includeExpired, includeMetadata);
+
+        exportModal.style.display = 'none';
+    });
+
+    cancelExportButton.addEventListener('click', () => exportModal.style.display = 'none');
+    closeExportButton.addEventListener('click', () => exportModal.style.display = 'none');
+
+    window.addEventListener('click', (e) => {
+        if (e.target === exportModal) {
+            exportModal.style.display = 'none';
+        }
+    });
+
 
     const backToObligations = document.getElementById('back-to-obligations');
     backToObligations.addEventListener('click', () => {
@@ -48,6 +85,8 @@ function setupEventListeners() {
         showUploadForm();
     });
 }
+
+
 
 async function loadCategories() {
     const categoriesList = document.getElementById('categories-list');
@@ -770,6 +809,94 @@ function showNotification(message, type = 'info') {
         }, 300);
     }, 5000);
 }
+
+async function renderExportCategories() {
+    const container = document.getElementById('export-categories');
+    container.innerHTML = '<p>Učitavanje kategorija...</p>';
+
+    try {
+        const response = await fetch(`${API_URL}/compliance/categories?organizationId=${organizationId}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const categoriesData = await response.json();
+
+        if (categoriesData.length === 0) {
+            container.innerHTML = '<p>Nema dostupnih kategorija za export</p>';
+            return;
+        }
+
+        container.innerHTML = categoriesData.map(cat => `
+            <div class="export-category-card">
+                <label class="export-category-label">
+                    <input type="checkbox" checked style="width: 14px; height: 14px;" value="${cat.categoryId}">
+                    <span class="category-name">${cat.categoryName || cat.name}</span>
+                </label>
+                <div class="category-info">
+                    ${cat.summary?.totalObligations || 0} obveza * ${cat.summary?.coveredObligations || 0} dokaza
+                </div>
+            </div>
+        `).join('');
+
+        } catch (error) {
+            console.error('Greška pri učitavanju kategorija za export:', error);
+            container.innerHTML = `<p style="color:red;">Greška pri učitavanju kategorija.</p>`;
+        }
+    }
+
+async function exportReport(categoryIds, includeExpired, includeMetadata) {
+    try {
+        showNotification('Izvještaj se generira...', 'info');
+
+        const response = await fetch(`${API_URL}/evidence/export`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: parseInt(userId),     
+                organizationId: parseInt(organizationId),
+                categoryIds,
+                includeExpired,
+                includeMetadata
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Greška pri generiranju izvještaja: ${response.status} ${errorText}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'audit_report.zip'; 
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        showNotification('Izvještaj je preuzet', 'success');
+
+    } catch (error) {
+        console.error(error);
+        showNotification(error.message, 'error');
+    }
+}
+
+function setupExportCategoryButtons() {
+    const selectAllBtn = document.getElementById('select-all-categories');
+    const deselectAllBtn = document.getElementById('deselect-all-categories');
+
+    selectAllBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = true);
+    });
+
+    deselectAllBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('#export-categories input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+    });
+}
+
 
 window.selectCategory = selectCategory;
 window.selectObligation = selectObligation;
