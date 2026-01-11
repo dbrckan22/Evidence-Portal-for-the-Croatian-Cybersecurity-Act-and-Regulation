@@ -2,7 +2,7 @@
 
 1. Preuzimanje komponenti:
    * preuzmite backend s https://github.com/dbrckan22/CyberEvidencePortalBackend.git
-   * preuzmite forntend s https://github.com/dbrckan22/Evidence-Portal-for-the-Croatian-Cybersecurity-Act-and-Regulation/tree/Frontend
+   * preuzmite frontend s https://github.com/dbrckan22/Evidence-Portal-for-the-Croatian-Cybersecurity-Act-and-Regulation/tree/Frontend
 
 2. Kreiranje lokalne baze podataka
    * otvorite SQL Server Management Studio (ili bilo koji drugi alat po izboru)
