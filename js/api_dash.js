@@ -431,7 +431,7 @@ function renderEvidence(evidenceData) {
                     <line x1="9" y1="15" x2="15" y2="15"></line>
                 </svg>
                 <p>Nema dokaza za ovu obvezu</p>
-                <p style="font-size: 0.75rem; margin-top: 8px;">Koristite Upload formu za dodavanje dokaza</p>
+                <p style="font-size: 0.75rem; margin-top: 8px;">Koristite <a href="dashboard.html" class="upload-link">Upload formu</a> za dodavanje dokaza</p>
             </div>
         `;
         return;
