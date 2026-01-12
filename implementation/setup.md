@@ -22,3 +22,5 @@
    * otvorite frontend folder
    * pokrenite index.html dvostukim klikom u pregledniku
    * frontend će se povezati na lokalno pokrenuti backend i moći ćete testirati aplikaciju
+   * podaci za prijavu u aplikaciju s testnim korisnikom su: pero.peric@gmail.com, PeroPeric123
+   * kod testiranja možete registrirati novog korisnika
