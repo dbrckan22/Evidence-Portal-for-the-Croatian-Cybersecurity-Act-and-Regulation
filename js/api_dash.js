@@ -634,7 +634,11 @@ async function deleteEvidence(evidenceId) {
         showNotification('Dokaz uspješno obrisan', 'success');
 
         await loadEvidence(selectedObligationId);
-        loadComplianceSummary();
+        await loadComplianceSummary();
+        await loadCategories();  
+        if (selectedCategoryId) {
+            await loadObligations(selectedCategoryId);
+        }
         
     } catch (error) {
         console.error('Error deleting evidence:', error);
