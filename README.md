@@ -43,3 +43,5 @@ Projekt će biti razvijen korištenjem modernih tehnologija i alata za izradu we
 - **JavaScript** - interaktivnost i dinamičko ponašanje elemenata sučelja
 
 **Napomena:** kod frontenda se nalazi na grani "Frontend".
+
+Okvirne skice se nalaze <a href="https://dab-relic-91139909.figma.site/" target="_blank">ovdje</a>.
